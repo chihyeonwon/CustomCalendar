@@ -2,6 +2,7 @@ package com.example.customcalendar.calendar
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.customcalendar.databinding.ActivityMainBinding
@@ -22,6 +23,10 @@ class MainActivity : AppCompatActivity() {
             layoutManager = monthListManager
             adapter = monthListAdapter
             scrollToPosition(Int.MAX_VALUE / 2)
+        }
+
+        binding.menu.setOnClickListener {
+            Toast.makeText(this, "Hello", Toast.LENGTH_SHORT).show()
         }
 
         val snap = PagerSnapHelper()
