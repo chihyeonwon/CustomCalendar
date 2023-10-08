@@ -1,4 +1,4 @@
-package com.example.customcalendar
+package com.example.customcalendar.calendar
 
 import android.view.LayoutInflater
 import android.view.ViewGroup

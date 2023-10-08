@@ -1,4 +1,4 @@
-package com.example.customcalendar
+package com.example.customcalendar.calendar
 
 import android.graphics.Color
 import android.view.LayoutInflater
