@@ -1,11 +1,13 @@
 package com.example.customcalendar.calendar
 
+import android.content.Intent
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.databinding.DayAdapterBinding
+import com.example.customcalendar.individual.IndividualActivity
 import java.util.*
 
 class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerView.Adapter<AdapterDay.DayView>() {
@@ -19,9 +21,14 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
     }
 
     override fun onBindViewHolder(holder: DayView, position: Int) {
+
         holder.binding.itemDayLayout.setOnClickListener {
+            val intent = Intent(holder.binding.root.context, IndividualActivity::class.java)
+            intent.putExtra("day","${dayList[position]}")
+            holder.binding.root.context.startActivity(intent)
             Toast.makeText(holder.binding.root.context, "${dayList[position]}", Toast.LENGTH_SHORT).show()
         }
+
         holder.binding.itemDayText.text = dayList[position].date.toString()
 
         holder.binding.itemDayText.setTextColor(when(position % 7) {
