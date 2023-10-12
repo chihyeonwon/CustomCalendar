@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.Toast
+import com.example.customcalendar.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.databinding.DayAdapterBinding
 import com.example.customcalendar.individual.IndividualActivity
@@ -26,7 +27,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
             val intent = Intent(holder.binding.root.context, IndividualActivity::class.java)
             intent.putExtra("day","${dayList[position]}")
             holder.binding.root.context.startActivity(intent)
-            Toast.makeText(holder.binding.root.context, "${dayList[position]}", Toast.LENGTH_SHORT).show()
+            //Toast.makeText(holder.binding.root.context, "${dayList[position]}", Toast.LENGTH_SHORT).show()
         }
 
         holder.binding.itemDayText.text = dayList[position].date.toString()
@@ -41,6 +42,9 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
             holder.binding.itemDayText.alpha = 0.4f
         }
 
+        if(Calendar.getInstance().get(Calendar.MONTH) == dayList[position].month && Calendar.getInstance().get(Calendar.DATE) == dayList[position].date) { // 오늘 날짜 강조
+            holder.binding.itemDayLayout.setBackgroundResource(R.drawable.round_border)
+        }
     }
 
     override fun getItemCount(): Int {

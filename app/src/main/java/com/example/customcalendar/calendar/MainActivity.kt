@@ -17,7 +17,7 @@ import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.customcalendar.auth.LoginActivity
+//import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.seperate.DaySeperateActivity
 import com.example.customcalendar.seperate.MonthSeperateActivity
@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, BoardActivity::class.java)
             startActivity(intent)
         }
-
+/*
         // 하루(당일) 단위로 일정을 보여주는 페이지로 이동
         findViewById<Button>(R.id.day).setOnClickListener {
             val intent = Intent(this, DaySeperateActivity::class.java)
@@ -64,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, MonthSeperateActivity::class.java)
             startActivity(intent)
         }
-
+*/
         // 액션바에 toolbar 셋팅
         setSupportActionBar(toolbar)
 
