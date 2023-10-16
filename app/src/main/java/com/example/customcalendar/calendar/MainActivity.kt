@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -17,18 +18,26 @@ import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-//import com.example.customcalendar.auth.LoginActivity
+import com.example.customcalendar.auth.LoginActivity
+import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.individual.IndividualActivity
+import com.example.customcalendar.menu.Menu1Activity
 import com.example.customcalendar.seperate.DaySeperateActivity
 import com.example.customcalendar.seperate.MonthSeperateActivity
 import com.example.customcalendar.seperate.WeekSeperateActivity
+import com.example.shared_calender.utils.FBRef
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
     lateinit var drawerLayout: DrawerLayout
+
+    private val calendarDataList = mutableListOf<CalendarModel>()
 
     private val TAG = MainActivity::class.java.simpleName
 
@@ -40,6 +49,8 @@ class MainActivity : AppCompatActivity() {
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val navigationView: NavigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
+
+
 
         // 게시판페이지(BoardActivity)로 이동
         findViewById<ImageView>(R.id.board).setOnClickListener {
@@ -86,30 +97,17 @@ class MainActivity : AppCompatActivity() {
 
                     when (item.itemId) {
                         R.id.nav_camera -> {
-                            item.isChecked = true
-                            displayMessage("selected camera")
-                            drawerLayout.closeDrawers()
-                            return true
-                        }
-
-                        R.id.nav_photo -> {
-                            item.isChecked = true
-                            displayMessage("selected photo")
-                            drawerLayout.closeDrawers()
-                            return true
-                        }
-
-                        R.id.nav_slideShow -> {
-                            item.isChecked = true
-                            displayMessage("selected slideShow")
-                            drawerLayout.closeDrawers()
-                            return true
+                            val intent = Intent(this@MainActivity, Menu1Activity::class.java)
+                            startActivity(intent)
+                            Toast.makeText(this@MainActivity,"nav_camera",Toast.LENGTH_LONG).show()
                         }
 
                         else -> {
+                            startActivity(Intent(this@MainActivity, Menu1Activity::class.java))
                             return true
                         }
-                    }//when
+                    }
+                return false//when
                 }// onNavigationItemSelected
             }//NavigationView.OnNavigationItemSelectedListener
         )//setNavigationItemSelectedListener
@@ -125,22 +123,58 @@ class MainActivity : AppCompatActivity() {
 
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.customCalendar)
+
+        getFBBoardData()
     }//onCreate
+
+    // 툴바 메뉴 버튼이 클릭 됐을 때 실행하는 함수
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        // 클릭한 툴바 메뉴 아이템 id 마다 다르게 실행하도록 설정
+        when(item!!.itemId){
+            android.R.id.home->{
+                // 햄버거 버튼 클릭시 네비게이션 드로어 열기
+                drawerLayout.openDrawer(GravityCompat.START)
+            }
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
     // 메시지 알림
     private fun displayMessage(message: String) {
         Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
     }
 
-    // 메뉴 선택 이벤트
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            android.R.id.home -> {
-                //drawerLayout 펼치기
-                drawerLayout.openDrawer(GravityCompat.START)
+
+    override fun onBackPressed() { //뒤로가기 처리
+        if(drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawers()
+            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
+            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
+        } else{
+            super.onBackPressed()
+        }
+    }
+
+
+    private fun getFBBoardData() {
+
+        val postListner = object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                // calendarDataList.clear()
+
+                val dataModel = dataSnapshot.getValue(CalendarModel::class.java)
+                findViewById<TextView>(R.id.plan).setText(dataModel?.plan)
+
+
+                // calendarDataList.reverse()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
+        FBRef.calendarRef.addValueEventListener(postListner)
 
-        return super.onOptionsItemSelected(item)
     }
 }
