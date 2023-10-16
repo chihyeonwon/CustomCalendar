@@ -27,11 +27,11 @@ class IndividualActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.selectedDay).text = intent.getStringExtra("day").toString()
 
         binding.writeBtn.setOnClickListener {
+            val date = intent.getStringExtra("day").toString()
             val plan = binding.plan.text.toString()
             val location = binding.location.text.toString()
 
-            FBRef.calendarRef
-                .setValue(CalendarModel(plan, location))
+            FBRef.calendarRef.setValue(CalendarModel(date, plan, location))
 
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
