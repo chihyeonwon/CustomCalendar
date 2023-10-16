@@ -33,7 +33,7 @@ class IndividualActivity : AppCompatActivity() {
             FBRef.calendarRef
                 .setValue(CalendarModel(plan, location))
 
-            Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
+            //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)
 
