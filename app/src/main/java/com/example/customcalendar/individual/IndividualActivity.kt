@@ -10,10 +10,6 @@ import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityIndividualBinding
 import com.example.shared_calender.utils.FBRef
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 class IndividualActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityIndividualBinding
@@ -35,14 +31,14 @@ class IndividualActivity : AppCompatActivity() {
             val location = binding.location.text.toString()
 
             FBRef.calendarRef
-                .push() // 랜덤한 값
-                .setValue(CalendarModel(plan,location))
+                .setValue(CalendarModel(plan, location))
 
-            Toast.makeText(this,"게시글 입력 완료", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
+
+            Log.d(TAG, plan)
+
 
             finish()
         }
     }
-
-
 }

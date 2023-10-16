@@ -51,6 +51,7 @@
         <Button
             android:id="@+id/writeBtn"
             android:text="입력"
+            android:textColor="@color/black"
             android:layout_width="match_parent"
             android:layout_height="50dp">
         </Button>

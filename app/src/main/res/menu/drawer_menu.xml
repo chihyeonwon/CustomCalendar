@@ -4,14 +4,12 @@
         <item
             android:id="@+id/nav_camera"
             android:icon="@drawable/ic_camera"
-            android:title="Camera"/>
-        <item
-            android:id="@+id/nav_photo"
-            android:icon="@drawable/calendar"
-            android:title="Camera"/>
+            android:title="Camera"
+            android:checked="false"/>
         <item
             android:id="@+id/nav_slideShow"
             android:icon="@drawable/ic_slideshow"
-            android:title="Camera"/>
+            android:title="Camera"
+            android:checked="false" />
     </group>
 </menu>
