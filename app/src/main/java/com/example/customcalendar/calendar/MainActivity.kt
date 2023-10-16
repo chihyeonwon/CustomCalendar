@@ -18,7 +18,6 @@ import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
-import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.menu.Menu1Activity
