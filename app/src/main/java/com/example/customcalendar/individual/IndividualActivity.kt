@@ -24,7 +24,8 @@ class IndividualActivity : AppCompatActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_individual)
 
         // 선택한 날짜를 받아와서 화면에 뿌려줌
-        findViewById<TextView>(R.id.selectedDay).text = intent.getStringExtra("day").toString()
+        findViewById<TextView>(R.id.startDate).text = intent.getStringExtra("day").toString()
+        findViewById<TextView>(R.id.endDate).text = intent.getStringExtra("day").toString()
 
         binding.writeBtn.setOnClickListener {
             val date = intent.getStringExtra("day").toString()
