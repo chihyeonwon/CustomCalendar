@@ -100,11 +100,6 @@ class MainActivity : AppCompatActivity() {
                             startActivity(intent)
                             Toast.makeText(this@MainActivity,"nav_camera",Toast.LENGTH_LONG).show()
                         }
-
-                        else -> {
-                            startActivity(Intent(this@MainActivity, Menu1Activity::class.java))
-                            return true
-                        }
                     }
                 return false//when
                 }// onNavigationItemSelected
