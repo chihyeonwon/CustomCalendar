@@ -7,6 +7,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     app:layoutDescription="@xml/activity_main_scene"
     tools:context=".calendar.MainActivity"
     tools:openDrawer="start">
@@ -17,17 +18,16 @@
         android:orientation="vertical">
 
         <include layout="@layout/toolbar_layout"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/custom_calendar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
     </LinearLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_marginTop="50dp"
-            android:id="@+id/custom_calendar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

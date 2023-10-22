@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="120dp"
-    android:background="#FFFF00"
+    android:background="#999999"
     android:orientation="horizontal"
     android:padding="16dp">
 
@@ -14,6 +14,7 @@
         android:layout_height="75dp"/>
 
     <TextView
+        android:id="@+id/account"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="User ID"

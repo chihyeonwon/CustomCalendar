@@ -1,5 +1,6 @@
 package com.example.customcalendar.calendar
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -18,6 +20,7 @@ import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.menu.Menu1Activity
@@ -40,6 +43,7 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
 
+    @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater) // ViewBinding 초기화
@@ -49,6 +53,11 @@ class MainActivity : AppCompatActivity() {
         val navigationView: NavigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
 
+        // 계정 버튼 클릭했을 때 로그인 액티비티로 이동
+        binding.navigationView.getHeaderView(0).setOnClickListener {
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+        }
 
 
         // 게시판페이지(BoardActivity)로 이동
@@ -118,7 +127,7 @@ class MainActivity : AppCompatActivity() {
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.customCalendar)
 
-        getFBBoardData()
+        /*getFBBoardData()*/
     }//onCreate
 
     // 툴바 메뉴 버튼이 클릭 됐을 때 실행하는 함수
@@ -150,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    private fun getFBBoardData() {
+    /*private fun getFBBoardData() {
 
         val postListner = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -170,5 +179,5 @@ class MainActivity : AppCompatActivity() {
         }
         FBRef.calendarRef.addValueEventListener(postListner)
 
-    }
+    }*/
 }

@@ -16,6 +16,12 @@
         android:theme="@style/Theme.CustomCalendar"
         tools:targetApi="31" >
         <activity
+            android:name=".auth.signupActivity"
+            android:exported="false" />
+        <activity
+            android:name=".auth.LoginActivity"
+            android:exported="false" />
+        <activity
             android:name=".menu.Menu1Activity"
             android:exported="false" />
         <activity
