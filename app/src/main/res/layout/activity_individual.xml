@@ -1,60 +1,74 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".individual.IndividualActivity"
-        android:orientation="vertical">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/black">
-        </LinearLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="50dp">
-
-            <TextView
-                android:id="@+id/selectedDay"
-                android:text="선택한 일자"
-                android:textStyle="bold"
-                android:textSize="25dp"
-                android:gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="3dp"
-            android:background="@color/black">
-        </LinearLayout>
+        android:orientation="vertical"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:layout_marginTop="16dp"
+        tools:context=".individual.IndividualActivity">
 
         <EditText
             android:id="@+id/plan"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-        </EditText>
+            android:layout_height="50dp"
+            android:hint="일정" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/startDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="yy년MM월dd일" />
+
+            <Button
+                android:id="@+id/startBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:background="?attr/selectableItemBackground"
+                android:text="시작일" />
+
+            <TextView
+                android:id="@+id/endDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="yy년MM월dd일" />
+
+            <Button
+                android:id="@+id/endBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:background="?attr/selectableItemBackground"
+                android:text="종료일" />
+
+        </LinearLayout>
 
         <EditText
             android:id="@+id/location"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-        </EditText>
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp"
+            android:hint="장소" />
 
         <Button
             android:id="@+id/writeBtn"
-            android:text="입력"
-            android:textColor="@color/black"
             android:layout_width="match_parent"
-            android:layout_height="50dp">
-        </Button>
+            android:layout_height="50dp"
+            android:text="입력"
+            android:layout_marginTop="16dp"
+            android:textColor="@color/black"/>
 
     </LinearLayout>
 </layout>
