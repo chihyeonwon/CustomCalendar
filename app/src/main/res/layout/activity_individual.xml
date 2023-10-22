@@ -34,9 +34,9 @@
                 android:id="@+id/startBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
                 android:background="?attr/selectableItemBackground"
-                android:text="시작일" />
+                android:text="시작일"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/endDate"
