@@ -5,7 +5,10 @@
         <item name="colorPrimary">@color/white</item>
     </style>
 
-    <style name="Theme.CustomCalendar" parent="Base.Theme.CustomCalendar" />
+    <style name="Theme.CustomCalendar" parent="Base.Theme.CustomCalendar">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="windowNoTitle">true</item>
+    </style>
 
     <style name="Theme.kotlinExam" parent="Theme.MaterialComponents.DayNight.NoActionBar"/>
 

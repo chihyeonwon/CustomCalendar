@@ -104,7 +104,7 @@ class MainActivity : AppCompatActivity() {
                 override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
                     when (item.itemId) {
-                        R.id.nav_camera -> {
+                        R.id.account -> {
                             val intent = Intent(this@MainActivity, Menu1Activity::class.java)
                             startActivity(intent)
                             Toast.makeText(this@MainActivity,"nav_camera",Toast.LENGTH_LONG).show()
@@ -159,7 +159,7 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-    /*private fun getFBBoardData() {
+    private fun getFBBoardData() {
 
         val postListner = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -179,5 +179,5 @@ class MainActivity : AppCompatActivity() {
         }
         FBRef.calendarRef.addValueEventListener(postListner)
 
-    }*/
+    }
 }
