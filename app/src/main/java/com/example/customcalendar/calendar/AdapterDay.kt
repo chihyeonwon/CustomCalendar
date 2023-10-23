@@ -9,12 +9,14 @@ import com.example.customcalendar.R
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.databinding.DayAdapterBinding
 import com.example.customcalendar.individual.IndividualActivity
+import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.util.*
 
 class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerView.Adapter<AdapterDay.DayView>() {
     val ROW = 6
     var selectedDate = LocalDate.now()
+    val formatter = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
     inner class DayView(val binding: DayAdapterBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
@@ -26,8 +28,9 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>): RecyclerVie
 
         holder.binding.itemDayLayout.setOnClickListener {
             val intent = Intent(holder.binding.root.context, IndividualActivity::class.java)
-            intent.putExtra("day","${dayList[position]}")
+            intent.putExtra("day","${formatter.format(dayList[position])}")
             holder.binding.root.context.startActivity(intent)
+
 
             //Toast.makeText(holder.binding.root.context, "${dayList[position]}", Toast.LENGTH_SHORT).show()
         }
