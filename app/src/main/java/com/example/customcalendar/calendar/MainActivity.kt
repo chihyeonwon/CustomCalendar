@@ -24,9 +24,6 @@ import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.menu.Menu1Activity
-import com.example.customcalendar.seperate.DaySeperateActivity
-import com.example.customcalendar.seperate.MonthSeperateActivity
-import com.example.customcalendar.seperate.WeekSeperateActivity
 import com.example.shared_calender.utils.FBRef
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
@@ -65,25 +62,7 @@ class MainActivity : AppCompatActivity() {
             val intent = Intent(this, BoardActivity::class.java)
             startActivity(intent)
         }
-/*
-        // 하루(당일) 단위로 일정을 보여주는 페이지로 이동
-        findViewById<Button>(R.id.day).setOnClickListener {
-            val intent = Intent(this, DaySeperateActivity::class.java)
-            startActivity(intent)
-        }
 
-        // 일주일 단위로 일정을 보여주는 페이지로 이동
-        findViewById<Button>(R.id.week).setOnClickListener {
-            val intent = Intent(this, WeekSeperateActivity::class.java)
-            startActivity(intent)
-        }
-
-        // 월 단위로 일정을 보여주는 페이지로 이동
-        findViewById<Button>(R.id.month).setOnClickListener {
-            val intent = Intent(this, MonthSeperateActivity::class.java)
-            startActivity(intent)
-        }
-*/
         // 액션바에 toolbar 셋팅
         setSupportActionBar(toolbar)
 

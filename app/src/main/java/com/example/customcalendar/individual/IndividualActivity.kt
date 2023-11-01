@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.widget.Button
 import android.widget.DatePicker
 import android.widget.TextView
+import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
@@ -31,18 +32,18 @@ class IndividualActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.startDate).text = intent.getStringExtra("day").toString()
         findViewById<TextView>(R.id.endDate).text = intent.getStringExtra("day").toString()
 
-        binding.startBtn.setOnClickListener { // 시작 날짜 설정
+        binding.startDate.setOnClickListener { // 시작 날짜 설정
             val startView = LayoutInflater.from(this).inflate(R.layout.select_date, null)
             val sBuilder = AlertDialog.Builder(this).setView(startView).setTitle("시작일")
             val startAlertDialog = sBuilder.show()
-            val picker = startView.findViewById<DatePicker>(R.id.dateSpinner)
+            val dPicker = startView.findViewById<DatePicker>(R.id.dateSpinner)
             val acceptButton = startView.findViewById<Button>(R.id.acceptButton)
             val closeButton = startView.findViewById<Button>(R.id.closeButton)
 
             acceptButton.setOnClickListener {// 확인 버튼 처리
-                val selectedYear = picker.year.toString()
-                val selectedMonth = (picker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
-                val selectedDay = picker.dayOfMonth.toString()
+                val selectedYear = dPicker.year.toString()
+                val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
+                val selectedDay = dPicker.dayOfMonth.toString()
                 //Log.d(TAG, "Selected Date: $selectedDate")
                 findViewById<TextView>(R.id.startDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
                 startAlertDialog.dismiss()
@@ -53,28 +54,69 @@ class IndividualActivity : AppCompatActivity() {
             }
         }
 
-        binding.endBtn.setOnClickListener { // 종료 날짜 설정
+        binding.endDate.setOnClickListener { // 종료 날짜 설정
             val endView = LayoutInflater.from(this).inflate(R.layout.select_date, null)
             val eBuilder = AlertDialog.Builder(this).setView(endView).setTitle("종료일")
-            val picker = endView.findViewById<DatePicker>(R.id.dateSpinner)
+            val dPicker = endView.findViewById<DatePicker>(R.id.dateSpinner)
             val endAlertDialog = eBuilder.show()
 
             val acceptButton = endView.findViewById<Button>(R.id.acceptButton)
             val closeButton = endView.findViewById<Button>(R.id.closeButton)
 
             acceptButton.setOnClickListener {// 확인 버튼 처리
-                val selectedYear = picker.year.toString()
-                val selectedMonth = (picker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
-                val selectedDay = picker.dayOfMonth.toString()
-                //Log.d(TAG, "Selected Date: $selectedDate")
-                findViewById<TextView>(R.id.startDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
+                val selectedYear = dPicker.year.toString()
+                val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
+                val selectedDay = dPicker.dayOfMonth.toString()
+
+                findViewById<TextView>(R.id.endDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
                 endAlertDialog.dismiss()
-                //Toast.makeText(this, "수락", Toast.LENGTH_SHORT).show()
+
             }
             closeButton.setOnClickListener {// 취소버튼 처리
                 endAlertDialog.dismiss()
             }
         }
+
+        binding.startTime.setOnClickListener { // 종료 날짜 설정
+            val View = LayoutInflater.from(this).inflate(R.layout.select_time, null)
+            val Builder = AlertDialog.Builder(this).setView(View).setTitle("종료일")
+            val tPicker = View.findViewById<TimePicker>(R.id.timeSpinner)
+            val endAlertDialog = Builder.show()
+
+            val acceptButton = View.findViewById<Button>(R.id.acceptButton)
+            val closeButton = View.findViewById<Button>(R.id.closeButton)
+
+            acceptButton.setOnClickListener {// 확인 버튼 처리
+                val selectedhour = tPicker.hour.toString()
+                val selectedmin = tPicker.minute.toString()
+                findViewById<TextView>(R.id.startTime).text = selectedhour + "시 " + selectedmin + "분"
+                endAlertDialog.dismiss()
+            }
+            closeButton.setOnClickListener {// 취소버튼 처리
+                endAlertDialog.dismiss()
+            }
+        }
+
+        binding.endTime.setOnClickListener { // 종료 날짜 설정
+            val View = LayoutInflater.from(this).inflate(R.layout.select_time, null)
+            val Builder = AlertDialog.Builder(this).setView(View).setTitle("종료일")
+            val tPicker = View.findViewById<TimePicker>(R.id.timeSpinner)
+            val endAlertDialog = Builder.show()
+
+            val acceptButton = View.findViewById<Button>(R.id.acceptButton)
+            val closeButton = View.findViewById<Button>(R.id.closeButton)
+
+            acceptButton.setOnClickListener {// 확인 버튼 처리
+                val selectedhour = tPicker.hour.toString()
+                val selectedmin = tPicker.minute.toString()
+                findViewById<TextView>(R.id.endTime).text = selectedhour + "시 " + selectedmin + "분"
+                endAlertDialog.dismiss()
+            }
+            closeButton.setOnClickListener {// 취소버튼 처리
+                endAlertDialog.dismiss()
+            }
+        }
+
 
         binding.writeBtn.setOnClickListener {
             val date = intent.getStringExtra("day").toString()

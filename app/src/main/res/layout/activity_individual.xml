@@ -26,32 +26,51 @@
             <TextView
                 android:id="@+id/startDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="yy년MM월dd일" />
-
-            <Button
-                android:id="@+id/startBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:textSize="20sp"
                 android:background="?attr/selectableItemBackground"
-                android:text="시작일"
-                android:textColor="@color/black" />
+                android:gravity="center"
+                android:text="yy년MM월dd일" />
 
             <TextView
                 android:id="@+id/endDate"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textSize="20sp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
                 android:text="yy년MM월dd일" />
 
-            <Button
-                android:id="@+id/endBtn"
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:id="@+id/startTime"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/black"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="20sp"
                 android:background="?attr/selectableItemBackground"
-                android:text="종료일" />
+                android:gravity="center"
+                android:text="09시00분" />
+
+            <TextView
+                android:id="@+id/endTime"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:textSize="20sp"
+                android:background="?attr/selectableItemBackground"
+                android:gravity="center"
+                android:text="09시10분" />
+
 
         </LinearLayout>
 
