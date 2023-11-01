@@ -119,16 +119,19 @@ class IndividualActivity : AppCompatActivity() {
 
 
         binding.writeBtn.setOnClickListener {
-            val date = intent.getStringExtra("day").toString()
+            //val date = intent.getStringExtra("day").toString()
+            val startdate = binding.startDate.text.toString()
+            val enddate = binding.endDate.text.toString()
+            val starttime = binding.startTime.text.toString()
+            val endtime = binding.endTime.text.toString()
             val plan = binding.plan.text.toString()
             val location = binding.location.text.toString()
 
-            FBRef.calendarRef.setValue(CalendarModel(date, plan, location))
-
+            //FBRef.calendarRef.setValue(CalendarModel(date, plan, location))
+            FBRef.calendarRef.setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location))
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)
-
 
             finish()
         }
