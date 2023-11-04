@@ -7,6 +7,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".board.BoardWriteActivity"
+        android:background="@color/white"
         android:orientation="vertical">
 
         <ScrollView
@@ -77,10 +78,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"/>
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/writeBtn"
                     android:text="입력"
-                    android:textColor="@color/black"
+                    android:textColor="@color/white"
                     android:textStyle="bold"
                     android:textSize="20dp"
                     android:layout_marginTop="50dp"
@@ -88,7 +89,7 @@
                     android:layout_marginRight="20dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/background_radius_yellow"/>
+                    android:background="@color/black"/>
             </LinearLayout>
         </ScrollView>
     </LinearLayout>
