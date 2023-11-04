@@ -47,8 +47,10 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
         holder.binding.itemDayLayout.layoutParams.height = height/8 //높이 조절
 
         val planData = mutableListOf<CalendarModel>()
-        var planAdapter = PlanAdapter(planData)
+        val planAdapter = PlanAdapter(planData)
         holder.binding.planList.adapter = planAdapter
+
+        planAdapter.notifyDataSetChanged()
 
         holder.binding.itemDayText.setTextColor(when(position % 7) {
             0 -> Color.RED
@@ -64,34 +66,41 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             holder.binding.itemDayLayout.setBackgroundResource(R.drawable.round_border)
         } // 기존 날짜 강조
 
-        getPlanData(holder, position, planData)
+        getPlanData(holder, position, planData, planAdapter)
     }
 
-    private fun getPlanData(holder: DayView, position: Int, planData: MutableList<CalendarModel>) { //파이어베이스에서 일정 가져오기
+    private fun getPlanData(holder: DayView, position: Int, planData: MutableList<CalendarModel>, planAdapter: PlanAdapter) { //파이어베이스에서 일정 가져오기
 
-        val planListner = object: ValueEventListener {
+        val planListener = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") // 비교할 문자열 형태
                 val currentDate = dateFormat.format(dayList[position])
 
+                planData.clear()
+
                 for(dataModel in dataSnapshot.children) {
                     val item = dataModel.getValue(CalendarModel::class.java)
 
-                    if(currentDate == item?.startDate && uid == item?.uid && planData.distinct().isEmpty())  // 시작일 일치, 중복 아닌경우
+                    if(currentDate == item?.startDate && uid == item?.uid )  // 시작일 일치, 중복 아닌경우
                         planData.add(item!!)
                 }
+
+                planAdapter.notifyDataSetChanged()
             }
+
+
+
             override fun onCancelled(databaseError: DatabaseError) {
                 //Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
-        FBRef.calendarRef.addValueEventListener(planListner)
+        FBRef.calendarRef.addValueEventListener(planListener)
     }
-
 /*
-    private fun getPlanData(holder: DayView, position: Int) { //파이어베이스에서 일정 가져오기
 
-        val planListner = object: ValueEventListener {
+    private fun getPlanData(holder: DayView, position: Int, planData: MutableList<CalendarModel>) { //파이어베이스에서 일정 가져오기
+
+        val planListener = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
                 val dateformat = SimpleDateFormat("yyyy년 MM월 dd일") // 비교할 문자열 형태
                 val currentdate = dateformat.format(dayList[position])
@@ -107,15 +116,15 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
 
                 }
             }
-
             override fun onCancelled(databaseError: DatabaseError) {
                 //Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
-        FBRef.calendarRef.addValueEventListener(planListner)
+        FBRef.calendarRef.addValueEventListener(planListener)
 
     }
-    */
+*/
+
     override fun getItemCount(): Int {
         return ROW * 7
     }
