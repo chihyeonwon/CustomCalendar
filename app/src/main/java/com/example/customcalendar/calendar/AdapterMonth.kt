@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.databinding.MonthAdapterBinding
 import java.util.*
 
-class AdapterMonth: RecyclerView.Adapter<AdapterMonth.MonthView>() {
+class AdapterMonth(val height:Int): RecyclerView.Adapter<AdapterMonth.MonthView>() {
     val center = Int.MAX_VALUE / 2
     private var calendar = Calendar.getInstance()
 
@@ -36,7 +36,7 @@ class AdapterMonth: RecyclerView.Adapter<AdapterMonth.MonthView>() {
             calendar.add(Calendar.WEEK_OF_MONTH, 1)
         }
         val dayListManager = GridLayoutManager(holder.binding.root.context, 7)
-        val dayListAdapter = AdapterDay(tempMonth, dayList)
+        val dayListAdapter = AdapterDay(tempMonth, dayList, height)
 
         holder.binding.itemMonthDayList.apply {
             layoutManager = dayListManager
