@@ -8,7 +8,7 @@ import android.widget.BaseAdapter
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.example.customcalendar.R
-import com.example.shared_calender.utils.FBAuth
+import com.example.customcalendar.utils.FBAuth
 
 
 class BoardListLVAdapter(val boardList : MutableList<BoardModel>): BaseAdapter() {

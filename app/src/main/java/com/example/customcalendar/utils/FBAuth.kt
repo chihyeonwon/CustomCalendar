@@ -1,4 +1,5 @@
-package com.example.shared_calender.utils
+//package com.example.shared_calender.utils
+package com.example.customcalendar.utils
 
 import com.google.firebase.auth.FirebaseAuth
 import java.text.SimpleDateFormat

@@ -12,8 +12,8 @@ import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
 import com.example.customcalendar.databinding.ActivityBoardEditBinding
 import com.example.customcalendar.R
-import com.example.shared_calender.utils.FBAuth
-import com.example.shared_calender.utils.FBRef
+import com.example.customcalendar.utils.FBAuth
+import com.example.customcalendar.utils.FBRef
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

@@ -24,7 +24,7 @@ import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.menu.Menu1Activity
-import com.example.shared_calender.utils.FBRef
+import com.example.customcalendar.utils.FBRef
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError

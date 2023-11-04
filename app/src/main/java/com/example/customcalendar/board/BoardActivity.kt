@@ -7,7 +7,7 @@ import android.util.Log
 import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityBoardBinding
-import com.example.shared_calender.utils.FBRef
+import com.example.customcalendar.utils.FBRef
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener

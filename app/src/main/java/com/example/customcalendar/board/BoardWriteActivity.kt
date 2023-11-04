@@ -12,8 +12,8 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityBoardWriteBinding
-import com.example.shared_calender.utils.FBAuth
-import com.example.shared_calender.utils.FBRef
+import com.example.customcalendar.utils.FBAuth
+import com.example.customcalendar.utils.FBRef
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import java.io.ByteArrayOutputStream
