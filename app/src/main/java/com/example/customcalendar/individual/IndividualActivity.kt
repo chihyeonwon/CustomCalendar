@@ -3,6 +3,7 @@ package com.example.customcalendar.individual
 import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.LayoutInflater
 import android.widget.Button
@@ -14,6 +15,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityIndividualBinding
+import com.example.customcalendar.utils.FBAuth
 import com.example.customcalendar.utils.FBRef
 class IndividualActivity : AppCompatActivity() {
 
@@ -126,9 +128,16 @@ class IndividualActivity : AppCompatActivity() {
             val endtime = binding.endTime.text.toString()
             val plan = binding.plan.text.toString()
             val location = binding.location.text.toString()
+            val uid = FBAuth.getUid()
+            val inputTime = FBAuth.getTime()
 
             //FBRef.calendarRef.setValue(CalendarModel(date, plan, location))
-            FBRef.calendarRef.push().setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location))
+            if(plan == "")
+                Toast.makeText(binding.root.context, "일정이 없습니다.", Toast.LENGTH_SHORT).show()
+            else if(uid == "null")
+                Toast.makeText(binding.root.context, "비로그인 상태.", Toast.LENGTH_SHORT).show()
+            else
+                FBRef.calendarRef.push().setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, uid, inputTime))
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)

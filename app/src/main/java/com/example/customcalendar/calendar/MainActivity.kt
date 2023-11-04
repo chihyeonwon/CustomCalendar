@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
@@ -33,7 +34,6 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: ActivityMainBinding
 
     lateinit var drawerLayout: DrawerLayout
@@ -48,6 +48,7 @@ class MainActivity : AppCompatActivity() {
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
+        val height = resources.displayMetrics.heightPixels
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater) // ViewBinding 초기화
         setContentView(binding.root)
@@ -117,7 +118,7 @@ class MainActivity : AppCompatActivity() {
         )//setNavigationItemSelectedListener
 
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val monthListAdapter = AdapterMonth()
+        val monthListAdapter = AdapterMonth(height)
 
         binding.customCalendar.apply { // ViewBinding을 통해 calendar_custom 레이아웃 요소에 접근
             layoutManager = monthListManager
