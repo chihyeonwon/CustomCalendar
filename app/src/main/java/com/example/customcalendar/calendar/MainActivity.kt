@@ -19,6 +19,7 @@ import com.example.customcalendar.board.BoardActivity
 import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.CalendarModel
@@ -26,6 +27,7 @@ import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.menu.Menu1Activity
 import com.example.customcalendar.utils.FBRef
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -40,11 +42,27 @@ class MainActivity : AppCompatActivity() {
 
     private val TAG = MainActivity::class.java.simpleName
 
+    val user = FirebaseAuth.getInstance().currentUser
+
+    val email = user?.email
+
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater) // ViewBinding 초기화
         setContentView(binding.root)
+
+        Log.d(TAG,  binding.navigationView.getHeaderView(0)
+            .findViewById<TextView>(R.id.account).text.toString())
+
+
+        if(email == null) {
+            binding.navigationView.getHeaderView(0)
+                .findViewById<TextView>(R.id.account).text = "로그인해주세요"
+        } else {
+            binding.navigationView.getHeaderView(0)
+                .findViewById<TextView>(R.id.account).text = email
+        }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
         val navigationView: NavigationView = findViewById(R.id.navigationView)
@@ -52,7 +70,11 @@ class MainActivity : AppCompatActivity() {
 
         // 계정 버튼 클릭했을 때 로그인 액티비티로 이동
         binding.navigationView.getHeaderView(0).setOnClickListener {
-            val intent = Intent(this, LoginActivity::class.java)
+            val intent = if (FirebaseAuth.getInstance().currentUser != null) {
+                Intent(this, AccountActivity::class.java)
+            } else {
+                Intent(this, LoginActivity::class.java)
+            }
             startActivity(intent)
         }
 
