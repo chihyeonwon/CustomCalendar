@@ -1,14 +1,14 @@
-package com.example.customcalendar.calendar
+package com.example.customcalendar.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.TextView
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.DataBindingUtil.setContentView
 import com.example.customcalendar.R
 import com.example.customcalendar.auth.LoginActivity
+import com.example.customcalendar.calendar.MainActivity
 import com.example.customcalendar.databinding.ActivityAccountBinding
 import com.example.customcalendar.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
@@ -48,6 +48,8 @@ class AccountActivity : AppCompatActivity() {
             val intent = Intent(this, MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+
+            user?.sendEmailVerification()
 
 
             Toast.makeText(this,"로그아웃", Toast.LENGTH_LONG).show()

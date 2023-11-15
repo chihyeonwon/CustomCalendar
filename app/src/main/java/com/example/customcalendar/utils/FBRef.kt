@@ -22,5 +22,9 @@ class FBRef {
 
         val calendarRef = database.getReference("calendar")
 
+        val userRef = database.getReference("user")
+
+        val groupRef = database.getReference("group")
+
     }
 }

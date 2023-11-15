@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.example.customcalendar.calendar.MainActivity
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivitySignupBinding
+import com.example.customcalendar.menu.UserModel
+import com.example.customcalendar.utils.FBRef
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.ktx.Firebase
 
 class signupActivity : AppCompatActivity() {
 
@@ -61,18 +61,27 @@ class signupActivity : AppCompatActivity() {
             if(isGoToJoin) {
                 auth.createUserWithEmailAndPassword(email,password1)
                     .addOnCompleteListener(this) { task ->
-                        if(task.isSuccessful) {
-                            Toast.makeText(this,"성공", Toast.LENGTH_LONG).show()
+                        if (task.isSuccessful) {
+                            Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
                             val intent = Intent(this, LoginActivity::class.java)
-                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            intent.flags =
+                                Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)
-                        } else {
-                            Toast.makeText(this,"실패",Toast.LENGTH_LONG).show()
-                        }
+
+                            // 회원가입에 성공하면 생성된 이메일을 파이어베이스에 저장한다.
+                            val user = auth.currentUser
+                            user?.updateEmail(email)
+                                ?.addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        FBRef.userRef.push().setValue(UserModel(email))
+                                    }
+                                }
+                                    } else {
+                                        // 회원가입 실패
+                                }
                     }
-            }
+            } else { Toast.makeText(this,"실패",Toast.LENGTH_LONG).show() }
         }
-
-
     }
 }
+

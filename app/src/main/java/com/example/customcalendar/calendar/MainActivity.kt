@@ -4,12 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.util.Log
 import android.view.MenuItem
-import android.widget.Button
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.ActionBar
@@ -20,12 +17,11 @@ import com.example.customcalendar.board.BoardActivity
 import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
 import androidx.core.view.GravityCompat
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
+import com.example.customcalendar.auth.AccountActivity
 import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.individual.CalendarModel
-import com.example.customcalendar.individual.IndividualActivity
-import com.example.customcalendar.menu.Menu1Activity
+import com.example.customcalendar.menu.UserActivity
 import com.example.customcalendar.utils.FBRef
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -53,11 +49,13 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater) // ViewBinding 초기화
         setContentView(binding.root)
 
-        Log.d(TAG,  binding.navigationView.getHeaderView(0)
-            .findViewById<TextView>(R.id.account).text.toString())
+        Log.d(
+            TAG, binding.navigationView.getHeaderView(0)
+                .findViewById<TextView>(R.id.account).text.toString()
+        )
 
 
-        if(email == null) {
+        if (email == null) {
             binding.navigationView.getHeaderView(0)
                 .findViewById<TextView>(R.id.account).text = "로그인해주세요"
         } else {
@@ -101,21 +99,22 @@ class MainActivity : AppCompatActivity() {
         actionBar?.setDisplayShowTitleEnabled(false)
 
         //네비게이션뷰 아이템 선택 이벤트
-        navigationView.setNavigationItemSelectedListener(
-            object : NavigationView.OnNavigationItemSelectedListener {
-                override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        if(user != null) {
+            navigationView.setNavigationItemSelectedListener(
+                object : NavigationView.OnNavigationItemSelectedListener {
+                    override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
-                    when (item.itemId) {
-                        R.id.account -> {
-                            val intent = Intent(this@MainActivity, Menu1Activity::class.java)
-                            startActivity(intent)
-                            Toast.makeText(this@MainActivity,"nav_camera",Toast.LENGTH_LONG).show()
+                        when (item.itemId) {
+                            R.id.account -> {
+                                val intent = Intent(this@MainActivity, UserActivity::class.java)
+                                startActivity(intent)
+                            }
                         }
-                    }
-                return false//when
-                }// onNavigationItemSelected
-            }//NavigationView.OnNavigationItemSelectedListener
-        )//setNavigationItemSelectedListener
+                        return false//when
+                    }// onNavigationItemSelected
+                }//NavigationView.OnNavigationItemSelectedListener
+            )
+        }//setNavigationItemSelectedListener
 
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val monthListAdapter = AdapterMonth(height)
@@ -153,8 +152,6 @@ class MainActivity : AppCompatActivity() {
     override fun onBackPressed() { //뒤로가기 처리
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawers()
-            // 테스트를 위해 뒤로가기 버튼시 Toast 메시지
-            Toast.makeText(this,"back btn clicked",Toast.LENGTH_SHORT).show()
         } else{
             super.onBackPressed()
         }
