@@ -13,3 +13,8 @@
 ```
 menu는 item태그만 쓸 수 있어서 MainActivity의 drawerlayout 안의 navigationView 안에 ListView를 넣어줘서 해결했다.
 ```
+#### NavigationView에 LinearLayout 추가
+![image](https://github.com/mr-won/CustomCalendar/assets/58906858/e793605d-42aa-4db4-a1ac-21ff9d0002ea)
+```
+메뉴를 통해서 액티비티를 썼던 것을 NavigationView 안에다가 그냥 다 넣어줬다.
+```
