@@ -18,3 +18,9 @@ menu는 item태그만 쓸 수 있어서 MainActivity의 drawerlayout 안의 navi
 ```
 메뉴를 통해서 액티비티를 썼던 것을 NavigationView 안에다가 그냥 다 넣어줬다.
 ```
+#### 친구 추가 로직수정
+
+
+#### Firebase Notification 사용하기
+
+#### plan 데이터를 넣고 뺄 때 uid를 사용해서 데이터베이스의 경로를 수정한다음 구분해줘야함
