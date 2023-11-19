@@ -32,7 +32,7 @@ parse메서드를 사용하여 시간으로 변경한 후 두 날짜의 차이�
 ```
 
 #### D-Day Sort
-![image](https://github.com/mr-won/CustomCalendar/assets/58906858/6b01f437-2b98-4e4d-b233-ab8ade1aa083)
+![image](https://github.com/mr-won/CustomCalendar/assets/58906858/0b3d5321-b6aa-4f5a-95aa-660f855c347f)
 ```
 startDate 기준으로 정렬하기 위해서 데이터를 가져오는 부분에 notiList.sortBy { it.startDate }를 추가했다.
 startDate 기준으로 빠른 것부터 정렬되서 데이터를 가져올 수 있다.
