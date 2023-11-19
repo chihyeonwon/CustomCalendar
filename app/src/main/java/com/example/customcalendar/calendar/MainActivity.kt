@@ -1,6 +1,8 @@
 package com.example.customcalendar.calendar
 
 import android.annotation.SuppressLint
+import android.app.Application
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -181,5 +183,18 @@ class MainActivity : AppCompatActivity() {
         }
         FBRef.calendarRef.addValueEventListener(postListner)
 
+    }
+    class MyApplication : Application() {
+
+        init{
+            instance = this
+        }
+
+        companion object {
+            lateinit var instance: MyApplication
+            fun ApplicationContext() : Context {
+                return instance.applicationContext
+            }
+        }
     }
 }
