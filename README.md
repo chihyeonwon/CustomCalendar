@@ -23,4 +23,11 @@ menu는 item태그만 쓸 수 있어서 MainActivity의 drawerlayout 안의 navi
 
 #### Firebase Notification 사용하기
 
+#### D-Day 구현
+![image](https://github.com/mr-won/CustomCalendar/assets/58906858/2b9c3191-5108-4a72-ac51-0a3e6c964eb8)
+```
+파이어베이스에 입력된 startDate와 오늘 날짜 currentDate를 SimpleDateFormat 메서드를 사용하여 yyyy-MM-dd의 형태로 바꿔준뒤
+parse메서드를 사용하여 시간으로 변경한 후 두 날짜의 차이를 시간으로 구한다. 그 후 나온 시간의 차이를 (1000 * 60 * 60 * 24) 날짜의 형태로
+수정한 후 diffInDays 변수에 저장한다. diffInDays가 음수일 때는 절댓값을 취한 뒤 + 기호를 붙여서 출력하고 양수일 때는 - 기호만 붙여서 출력한다.
+```
 #### plan 데이터를 넣고 뺄 때 uid를 사용해서 데이터베이스의 경로를 수정한다음 구분해줘야함
