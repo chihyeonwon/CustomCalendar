@@ -30,4 +30,11 @@ menu는 item태그만 쓸 수 있어서 MainActivity의 drawerlayout 안의 navi
 parse메서드를 사용하여 시간으로 변경한 후 두 날짜의 차이를 시간으로 구한다. 그 후 나온 시간의 차이를 (1000 * 60 * 60 * 24) 날짜의 형태로
 수정한 후 diffInDays 변수에 저장한다. diffInDays가 음수일 때는 절댓값을 취한 뒤 + 기호를 붙여서 출력하고 양수일 때는 - 기호만 붙여서 출력한다.
 ```
+
+#### D-Day Sort
+![image](https://github.com/mr-won/CustomCalendar/assets/58906858/6b01f437-2b98-4e4d-b233-ab8ade1aa083)
+```
+startDate 기준으로 정렬하기 위해서 데이터를 가져오는 부분에 notiList.sortBy { it.startDate }를 추가했다.
+startDate 기준으로 빠른 것부터 정렬되서 데이터를 가져올 수 있다.
+```
 #### plan 데이터를 넣고 뺄 때 uid를 사용해서 데이터베이스의 경로를 수정한다음 구분해줘야함
