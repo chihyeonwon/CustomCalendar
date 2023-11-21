@@ -81,7 +81,7 @@ class IndividualActivity : AppCompatActivity() {
 
         binding.startTime.setOnClickListener { // 종료 날짜 설정
             val View = LayoutInflater.from(this).inflate(R.layout.select_time, null)
-            val Builder = AlertDialog.Builder(this).setView(View).setTitle("종료일")
+            val Builder = AlertDialog.Builder(this).setView(View).setTitle("시작 시간")
             val tPicker = View.findViewById<TimePicker>(R.id.timeSpinner)
             val endAlertDialog = Builder.show()
 
@@ -101,7 +101,7 @@ class IndividualActivity : AppCompatActivity() {
 
         binding.endTime.setOnClickListener { // 종료 날짜 설정
             val View = LayoutInflater.from(this).inflate(R.layout.select_time, null)
-            val Builder = AlertDialog.Builder(this).setView(View).setTitle("종료일")
+            val Builder = AlertDialog.Builder(this).setView(View).setTitle("종료 시간")
             val tPicker = View.findViewById<TimePicker>(R.id.timeSpinner)
             val endAlertDialog = Builder.show()
 
