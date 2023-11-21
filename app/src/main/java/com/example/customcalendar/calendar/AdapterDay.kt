@@ -1,6 +1,5 @@
 package com.example.customcalendar.calendar
 
-import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -33,7 +32,7 @@ import java.util.Locale
 class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:Int): RecyclerView.Adapter<AdapterDay.DayView>() {
     val ROW = 6
     var selectedDate = LocalDate.now()
-    val formatter = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
+    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     private val keyvalue = mutableListOf<String>()
     private var tmpPosition = 0
 
