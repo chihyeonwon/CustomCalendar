@@ -12,6 +12,7 @@ import android.widget.TimePicker
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityEditplanBinding
@@ -173,10 +174,14 @@ class PlaneditActivity : AppCompatActivity() {
                 if (myUid.equals(writerUid)) {
                     binding.btnAccept.isClickable = true
                     binding.btnDelete.isClickable = true
+                    binding.btnAccept.isVisible = true
+                    binding.btnDelete.isVisible = true
                 }
                 else {
                     binding.btnAccept.isClickable = false
                     binding.btnDelete.isClickable = false
+                    binding.btnAccept.isVisible = false
+                    binding.btnDelete.isVisible = false
                 }
             }
             override fun onCancelled(databaseError: DatabaseError) {

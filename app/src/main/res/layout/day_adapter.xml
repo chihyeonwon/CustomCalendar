@@ -17,19 +17,19 @@
         android:layout_marginRight="5dp"
         android:text="9"
         android:textSize="16sp" />
-
-    <ListView
-        android:id="@+id/planList"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:gravity="right"
-        android:clickable="false"/>
-
     <TextView
-        android:id="@+id/plan"
+        android:id="@+id/holiday"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text=""
-        android:textSize="10sp" />
+        android:textSize="0sp"
+        android:visibility="invisible"/>
+
+    <ListView
+        android:id="@+id/planList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right" />
+
 </LinearLayout>

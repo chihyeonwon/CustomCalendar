@@ -1,9 +1,14 @@
 package com.example.customcalendar.individual
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ListView
 import android.widget.TextView
 import com.example.customcalendar.R
 
@@ -28,6 +33,7 @@ class PlanAdapter(val planList: MutableList<CalendarModel>): BaseAdapter()  {
 
         val plan = view?.findViewById<TextView>(R.id.itemPlan)
         val hidden = view?.findViewById<TextView>(R.id.hiddenValue)
+        val thumbnail = view?.findViewById<LinearLayout>(R.id.thumbnail)
 
         plan!!.text = planList[position].plan
         hidden!!.text = planList[position].inputTime
