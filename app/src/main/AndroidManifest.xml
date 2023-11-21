@@ -32,6 +32,9 @@
             android:name=".individual.IndividualActivity"
             android:exported="false" />
         <activity
+            android:name=".individual.PlaneditActivity"
+            android:exported="false" />
+        <activity
             android:name=".board.BoardActivity"
             android:exported="false" />
         <activity
