@@ -1,5 +1,6 @@
 package com.example.customcalendar.calendar
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
@@ -33,6 +34,8 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
     val ROW = 6
     var selectedDate = LocalDate.now()
     val formatter = SimpleDateFormat("yyyy년 MM월 dd일", Locale.getDefault())
+    private val keyvalue = mutableListOf<String>()
+    private var tmpPosition = 0
 
     inner class DayView(val binding: DayAdapterBinding): RecyclerView.ViewHolder(binding.root)
     private val uid = FBAuth.getUid()
@@ -58,7 +61,8 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
 
             plist.setOnItemClickListener{ parent, view, position, id ->
                 val intent = Intent(holder.binding.root.context, PlaneditActivity::class.java)
-                intent.putExtra("day","${formatter.format(dayList[position])}")
+                intent.putExtra("keyValue", keyvalue[position])
+                tmpPosition = position
                 holder.binding.root.context.startActivity(intent)
             }
             /*end*/
@@ -124,8 +128,8 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
 
         val planListener = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") // 비교할 문자열 형태
-                val currentDate = dateFormat.format(dayList[position])
+                //val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") // 비교할 문자열 형태
+                val currentDate = formatter.format(dayList[position])
 
                 planData.clear()
 
@@ -149,16 +153,19 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
 
         val planListener = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") // 비교할 문자열 형태
-                val currentDate = dateFormat.format(dayList[position])
+                //val dateFormat = SimpleDateFormat("yyyy년 MM월 dd일") // 비교할 문자열 형태
+                val currentDate = formatter.format(dayList[position])
 
                 planData.clear()
+                keyvalue.clear()
 
                 for(dataModel in dataSnapshot.children) {
                     val item = dataModel.getValue(CalendarModel::class.java)
 
-                    if(currentDate == item?.startDate && uid == item?.uid )  // 시작일 일치, 중복 아닌경우
+                    if(currentDate == item?.startDate && uid == item?.uid ) { // 시작일 일치, 중복 아닌경우
                         planData.add(item!!)
+                        keyvalue.add(dataModel.key.toString())
+                    }
                 }
 
                 planAdapter.notifyDataSetChanged()
@@ -198,7 +205,6 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
 
     }
 */
-
     override fun getItemCount(): Int {
         return ROW * 7
     }

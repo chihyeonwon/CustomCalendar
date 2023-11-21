@@ -30,11 +30,15 @@ class DayPlan(val planList: MutableList<CalendarModel>): BaseAdapter()  {
         val plan = view?.findViewById<TextView>(R.id.pl_plan)
         val time = view?.findViewById<TextView>(R.id.pl_time)
         val loc = view?.findViewById<TextView>(R.id.pl_loc)
+        val keyTime = view?.findViewById<TextView>(R.id.input_time)
+        val uid =  view?.findViewById<TextView>(R.id.uid)
         //val hidden = view?.findViewById<TextView>(R.id.hiddenValue)
 
         plan!!.text = planList[position].plan
         time!!.text = planList[position].startTime + " ~ " + planList[position].endTime
         loc!!.text = planList[position].location
+        keyTime!!.text = planList[position].inputTime
+        uid!!.text = planList[position].uid
         //hidden!!.text = planList[position].inputTime
 
         return view!!
