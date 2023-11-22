@@ -25,6 +25,7 @@ import com.google.firebase.database.ValueEventListener
 class PlaneditActivity : AppCompatActivity() {
     private lateinit var binding: ActivityEditplanBinding
     private  val TAG = IndividualActivity::class.java.simpleName
+    private lateinit var selectedbtn: String
     private lateinit var key:String
 
     @SuppressLint("MissingInflatedId")
@@ -156,6 +157,15 @@ class PlaneditActivity : AppCompatActivity() {
             Toast.makeText(this,"삭제완료",Toast.LENGTH_LONG).show()
             finish()
         }
+
+        binding.rdgroup.setOnCheckedChangeListener{ group, checkedID->
+            selectedbtn = when(checkedID){
+                R.id.high ->  "1"
+                R.id.normal -> "2"
+                R.id.low -> "3"
+                else -> "NaN"
+            }
+        }
     }
 
     private fun getPlan(key: String) {
@@ -168,6 +178,12 @@ class PlaneditActivity : AppCompatActivity() {
                 binding.startTime.setText(model?.startTime)
                 binding.endTime.setText(model?.endTime)
                 binding.location.setText(model?.location)
+
+                when(model?.importance){
+                    "1" -> binding.rdgroup.check(R.id.high)
+                    "2" -> binding.rdgroup.check(R.id.normal)
+                    "3" -> binding.rdgroup.check(R.id.low)
+                }
 
                 val myUid = FBAuth.getUid()
                 val writerUid = model?.uid
@@ -190,4 +206,5 @@ class PlaneditActivity : AppCompatActivity() {
         }
         FBRef.calendarRef.child(key).addValueEventListener(postListener)
     }
+
 }

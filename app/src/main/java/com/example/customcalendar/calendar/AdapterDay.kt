@@ -50,7 +50,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             val startView = LayoutInflater.from(holder.binding.root.context).inflate(R.layout.dayplan_dialog, null)
             val pBuilder = AlertDialog.Builder(holder.binding.root.context).setView(startView)
             val startAlertDialog = pBuilder.show()
-            startAlertDialog.window?.setLayout(720,1280)
+            startAlertDialog.window?.setLayout(960,1280)
             val pdate = startView.findViewById<TextView>(R.id.date)
             val pdow = startView.findViewById<TextView>(R.id.DayOfWeek)
             val padd = startView.findViewById<ImageView>(R.id.btn_add)
