@@ -33,10 +33,17 @@ class PlanAdapter(val planList: MutableList<CalendarModel>): BaseAdapter()  {
 
         val plan = view?.findViewById<TextView>(R.id.itemPlan)
         val hidden = view?.findViewById<TextView>(R.id.hiddenValue)
+        val importance = view?.findViewById<ImageView>(R.id.importanceColor)
         val thumbnail = view?.findViewById<LinearLayout>(R.id.thumbnail)
 
         plan!!.text = planList[position].plan
         hidden!!.text = planList[position].inputTime
+        when(planList[position].importance){
+            "1" -> importance!!.setImageResource(R.drawable.circle_red)
+            "2" -> importance!!.setImageResource(R.drawable.circle_yellow)
+            "3" -> importance!!.setImageResource(R.drawable.circle_green)
+            else -> importance!!.setImageResource(R.drawable.circle)
+        }
 
         return view!!
     }

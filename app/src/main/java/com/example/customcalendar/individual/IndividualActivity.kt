@@ -20,6 +20,7 @@ import com.example.customcalendar.utils.FBRef
 class IndividualActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityIndividualBinding
+    private lateinit var selectedbtn: String
 
     private val TAG = IndividualActivity::class.java.simpleName
 
@@ -137,12 +138,21 @@ class IndividualActivity : AppCompatActivity() {
             else if(uid == "null")
                 Toast.makeText(binding.root.context, "비로그인 상태.", Toast.LENGTH_SHORT).show()
             else
-                FBRef.calendarRef.push().setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, uid, inputTime))
+                FBRef.calendarRef.push().setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, uid, inputTime, selectedbtn))
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)
 
             finish()
+        }
+
+        binding.rdgroup.setOnCheckedChangeListener{ group, checkedID->
+            selectedbtn = when(checkedID){
+                R.id.high ->  "1"
+                R.id.normal -> "2"
+                R.id.low -> "3"
+                else -> "NaN"
+            }
         }
     }
 }
