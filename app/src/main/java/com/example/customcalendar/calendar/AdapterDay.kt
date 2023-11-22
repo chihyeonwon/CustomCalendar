@@ -54,9 +54,9 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             val pdate = startView.findViewById<TextView>(R.id.date)
             val pdow = startView.findViewById<TextView>(R.id.DayOfWeek)
             val padd = startView.findViewById<ImageView>(R.id.btn_add)
+
             /*11.21 ,수정사항*/
             val plist = startView.findViewById<ListView>(R.id.plan_list)
-
 
             plist.setOnItemClickListener{ parent, view, position, id ->
                 val intent = Intent(holder.binding.root.context, PlaneditActivity::class.java)
