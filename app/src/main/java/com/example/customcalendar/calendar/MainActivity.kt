@@ -66,6 +66,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var friendRVAdatper: FriendListLVAdapter
 
+
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         val height = resources.displayMetrics.heightPixels
@@ -89,6 +90,7 @@ class MainActivity : AppCompatActivity() {
         userRVAdatper = UserListLVAdapter(userList)
         binding.userListView.adapter = userRVAdatper
 
+
         binding.searchBtn.setOnClickListener {
             if(user != null) {
                 getFBUserData()
@@ -97,6 +99,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        
         // 키부터 생성하고 데이터베이스에 저장하도록 수정
         key1 = FBRef
             .requestRef
@@ -123,7 +126,7 @@ class MainActivity : AppCompatActivity() {
                     .makeText(this, "${userList[position].userID.toString()}에게 친구요청을 보냈습니다.",Toast.LENGTH_SHORT)
                     .show()
                 FBRef.requestRef
-                    .child(key1)
+                    .push()
                     .setValue(RequestModel(email.toString(),userList[position].userID.toString()))
             } else {
                 Toast
@@ -144,13 +147,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-      /*  binding.friendListView.setOnItemClickListener { parent, view, position, id ->
-            Toast
-                .makeText(this, "${friendList[position].friendEmail}의 달력으로 이동합니다.",Toast.LENGTH_SHORT)
-                .show()
-            val intent = Intent(this@MainActivity, FriendCalendarActivity::class.java)
-            startActivity(intent)
-        }*/
+        /*  binding.friendListView.setOnItemClickListener { parent, view, position, id ->
+              Toast
+                  .makeText(this, "${friendList[position].friendEmail}의 달력으로 이동합니다.",Toast.LENGTH_SHORT)
+                  .show()
+              val intent = Intent(this@MainActivity, FriendCalendarActivity::class.java)
+              startActivity(intent)
+          }*/
 
 
         // 계정 버튼 클릭했을 때 로그인 액티비티로 이동
@@ -300,10 +303,11 @@ class MainActivity : AppCompatActivity() {
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
 
+                    val searchEdit = binding.search.text
 
                     val item = dataModel.getValue(UserModel::class.java)
                     Log.d(TAG, item?.userID.toString())
-                    if(item?.userID.toString().contains(binding.search.text)) {
+                    if(item?.userID.toString().contains(binding.search.text) && searchEdit.toString() != "") {
                         userList.add(item!!)
                     }
                 }
@@ -330,12 +334,12 @@ class MainActivity : AppCompatActivity() {
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
                     val item = dataModel.getValue(FriendModel::class.java)
-                    
+
                     // 친구이메일에 내 이메일이 있거나 이메일에 내 이메일이 있어야 리스트에 추가함
                     if(item!!.friendEmail == email || item!!.myEmail == email) {
                         friendList.add(item!!)
                     }
-                    
+
                     // 리스트에서 friendEmail 즉 데이터베이스의 젤 앞 값이 내 이메일과 같으면 리스트에서 삭제
                     friendList.removeIf { it.friendEmail == email }
                 }
