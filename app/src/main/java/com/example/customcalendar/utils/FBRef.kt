@@ -24,7 +24,9 @@ class FBRef {
 
         val userRef = database.getReference("user")
 
-        val groupRef = database.getReference("group")
+        val requestRef = database.getReference("request")
+
+        val friendRef = database.getReference("friend")
 
     }
 }

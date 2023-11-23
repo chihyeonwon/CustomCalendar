@@ -1,9 +1,12 @@
 package com.example.customcalendar.calendar
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -11,19 +14,26 @@ import android.view.MenuItem
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.PagerSnapHelper
 import com.example.customcalendar.R
-import com.example.customcalendar.board.BoardActivity
 import com.example.customcalendar.databinding.ActivityMainBinding
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.customcalendar.auth.AccountActivity
 import com.example.customcalendar.auth.LoginActivity
+import com.example.customcalendar.auth.RequestModel
 import com.example.customcalendar.individual.CalendarModel
-import com.example.customcalendar.menu.UserActivity
+import com.example.customcalendar.friend.FriendCalendarActivity
+import com.example.customcalendar.friend.FriendListLVAdapter
+import com.example.customcalendar.friend.FriendModel
+import com.example.customcalendar.menu.UserListLVAdapter
+import com.example.customcalendar.menu.UserModel
+import com.example.customcalendar.notification.NotiActivity
 import com.example.customcalendar.utils.FBRef
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
@@ -44,18 +54,24 @@ class MainActivity : AppCompatActivity() {
 
     val email = user?.email
 
+    private val userList = mutableListOf<UserModel>()
+
+    private lateinit var key1:String
+    private val boardKeyList = mutableListOf<String>()
+
+    private lateinit var userRVAdatper: UserListLVAdapter
+
+
+    private val friendList = mutableListOf<FriendModel>()
+
+    private lateinit var friendRVAdatper: FriendListLVAdapter
+
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         val height = resources.displayMetrics.heightPixels
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater) // ViewBinding 초기화
         setContentView(binding.root)
-
-        Log.d(
-            TAG, binding.navigationView.getHeaderView(0)
-                .findViewById<TextView>(R.id.account).text.toString()
-        )
-
 
         if (email == null) {
             binding.navigationView.getHeaderView(0)
@@ -69,6 +85,74 @@ class MainActivity : AppCompatActivity() {
         val navigationView: NavigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
 
+        // UserListLVAdpater와 연결
+        userRVAdatper = UserListLVAdapter(userList)
+        binding.userListView.adapter = userRVAdatper
+
+        binding.searchBtn.setOnClickListener {
+            if(user != null) {
+                getFBUserData()
+            } else {
+                Toast.makeText(this, "비로그인상태입니다.", Toast.LENGTH_SHORT).show()
+            }
+        }
+
+        // 키부터 생성하고 데이터베이스에 저장하도록 수정
+        key1 = FBRef
+            .requestRef
+            .push()
+            .key.toString()
+
+        binding.userListView.setOnItemClickListener { parent, view, position, id ->
+
+            // 이미 친구라면 요청하지 못하고 친구가 아니라면 요청을 보냄
+            if(friendList.contains(FriendModel(email.toString(),userList[position].userID.toString())) &&
+                friendList.contains(FriendModel(userList[position].userID.toString(), email.toString())))
+            {
+                Toast
+                    .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
+                    .show()
+            } else if(email.toString() == userList[position].userID.toString())
+            {
+                Toast
+                    .makeText(this,"자기 자신은 친구로 등록할 수 없습니다.",Toast.LENGTH_SHORT)
+                    .show()
+            }  else if(!friendList.contains(FriendModel(email.toString(),userList[position].userID.toString())) &&
+                !friendList.contains(FriendModel(userList[position].userID.toString(), email.toString()))){
+                Toast
+                    .makeText(this, "${userList[position].userID.toString()}에게 친구요청을 보냈습니다.",Toast.LENGTH_SHORT)
+                    .show()
+                FBRef.requestRef
+                    .child(key1)
+                    .setValue(RequestModel(email.toString(),userList[position].userID.toString()))
+            } else {
+                Toast
+                    .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+        }
+
+        // FriendListLVAdapter와 연결
+        friendRVAdatper = FriendListLVAdapter(friendList)
+
+        binding.friendListView.adapter = friendRVAdatper
+
+        // myEmail과 friendEmail이 포함되었을 때
+        if(user != null) {
+            getFBfriendData()
+        }
+
+
+      /*  binding.friendListView.setOnItemClickListener { parent, view, position, id ->
+            Toast
+                .makeText(this, "${friendList[position].friendEmail}의 달력으로 이동합니다.",Toast.LENGTH_SHORT)
+                .show()
+            val intent = Intent(this@MainActivity, FriendCalendarActivity::class.java)
+            startActivity(intent)
+        }*/
+
+
         // 계정 버튼 클릭했을 때 로그인 액티비티로 이동
         binding.navigationView.getHeaderView(0).setOnClickListener {
             val intent = if (FirebaseAuth.getInstance().currentUser != null) {
@@ -79,12 +163,18 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        // 게시판페이지(BoardActivity)로 이동
-        findViewById<ImageView>(R.id.board).setOnClickListener {
-            val intent = Intent(this, BoardActivity::class.java)
+        // 알림 아이콘을 클릭했을 때 NotiActivity로 이동
+        findViewById<ImageView>(R.id.noti).setOnClickListener {
+            val intent = Intent(this, NotiActivity::class.java)
             startActivity(intent)
         }
+
+
+        /*// 게시판페이지(BoardActivity)로 이동
+   `x     findViewById<ImageView>(R.id.board).setOnClickListener {
+            val intent = Intent(this, BoardActivity::class.java)
+            startActivity(intent)
+        }*/
 
         // 액션바에 toolbar 셋팅
         setSupportActionBar(toolbar)
@@ -107,10 +197,15 @@ class MainActivity : AppCompatActivity() {
                     override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
                         when (item.itemId) {
-                            R.id.account -> {
-                                val intent = Intent(this@MainActivity, UserActivity::class.java)
+                            // 친구 추가 메뉴
+                            /*R.id.addFriend -> {
+                                val intent = Intent(this@MainActivity, AddFriendActivity::class.java)
                                 startActivity(intent)
-                            }
+                            }*/
+                            /*R.id.group -> {
+                                val intent = Intent(this@MainActivity, FriendActivity::class.java)
+                                startActivity(intent)
+                            }*/
                         }
                         return false//when
                     }// onNavigationItemSelected
@@ -159,7 +254,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun getFBBoardData() {
 
         val postListner = object: ValueEventListener {
@@ -194,4 +288,90 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+
+    private fun getFBUserData() {
+
+        val postListner = object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                userList.clear()
+
+                // dataModel에 있는 데이터를 하나씩 가져오는 부분
+                for(dataModel in dataSnapshot.children) {
+
+
+                    val item = dataModel.getValue(UserModel::class.java)
+                    Log.d(TAG, item?.userID.toString())
+                    if(item?.userID.toString().contains(binding.search.text)) {
+                        userList.add(item!!)
+                    }
+                }
+
+                // userRVAdatper 동기화
+                userRVAdatper.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        FBRef.userRef.addValueEventListener(postListner)
+
+    }
+
+    private fun getFBfriendData() {
+
+        val postListner = object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                friendList.clear()
+
+                // dataModel에 있는 데이터를 하나씩 가져오는 부분
+                for(dataModel in dataSnapshot.children) {
+                    val item = dataModel.getValue(FriendModel::class.java)
+                    
+                    // 친구이메일에 내 이메일이 있거나 이메일에 내 이메일이 있어야 리스트에 추가함
+                    if(item!!.friendEmail == email || item!!.myEmail == email) {
+                        friendList.add(item!!)
+                    }
+                    
+                    // 리스트에서 friendEmail 즉 데이터베이스의 젤 앞 값이 내 이메일과 같으면 리스트에서 삭제
+                    friendList.removeIf { it.friendEmail == email }
+                }
+
+                // userRVAdatper 동기화
+                friendRVAdatper.notifyDataSetChanged()
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        FBRef.friendRef.addValueEventListener(postListner)
+    }
+
+
+    /** Android 13 PostNotification */
+    private fun checkAppPushNotification() {
+        //Android 13 이상 && 푸시권한 없음
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+            && PackageManager.PERMISSION_DENIED == ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)) {
+            // 푸쉬 권한 없음
+            permissionPostNotification.launch(Manifest.permission.POST_NOTIFICATIONS)
+            return
+        }
+
+        //권한이 있을때
+    }
+
+    /** 권한 요청 */
+    private val permissionPostNotification = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+        if (isGranted) {
+            //권한 허용
+        } else {
+            //권한 비허용
+        }
+    }
+
 }

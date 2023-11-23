@@ -17,6 +17,7 @@ import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityEditplanBinding
 import com.example.customcalendar.utils.FBAuth
 import com.example.customcalendar.utils.FBRef
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
@@ -132,16 +133,17 @@ class PlaneditActivity : AppCompatActivity() {
             val endtime = binding.endTime.text.toString()
             val plan = binding.plan.text.toString()
             val location = binding.location.text.toString()
-            val uid = FBAuth.getUid()
+            val user = FirebaseAuth.getInstance().currentUser
+            val email = user?.email.toString()
             val inputTime = FBAuth.getTime()
 
             //FBRef.calendarRef.setValue(CalendarModel(date, plan, location))
             if(plan == "")
                 Toast.makeText(binding.root.context, "일정이 없습니다.", Toast.LENGTH_SHORT).show()
-            else if(uid == "null")
+            else if(email == "null")
                 Toast.makeText(binding.root.context, "비로그인 상태.", Toast.LENGTH_SHORT).show()
             else
-                FBRef.calendarRef.child(key).setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, uid, inputTime))
+                FBRef.calendarRef.child(key).setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, email, inputTime))
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)
@@ -168,9 +170,11 @@ class PlaneditActivity : AppCompatActivity() {
                 binding.endTime.setText(model?.endTime)
                 binding.location.setText(model?.location)
 
-                val myUid = FBAuth.getUid()
-                val writerUid = model?.uid
-                if (myUid.equals(writerUid)) {
+                val user = FirebaseAuth.getInstance().currentUser
+                val email = user?.email
+
+                val writerUid = model?.email
+                if (email.equals(writerUid)) {
                     binding.btnAccept.isClickable = true
                     binding.btnDelete.isClickable = true
                 }
