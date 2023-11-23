@@ -8,6 +8,6 @@ data class CalendarModel (
     val plan: String = "",
     val location: String = "",
     val email: String  = "",
-    val inputTime: String  = ""
+    val inputTime: String  = "",
     val importance: String = ""
 )

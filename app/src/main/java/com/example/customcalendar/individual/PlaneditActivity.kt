@@ -145,7 +145,7 @@ class PlaneditActivity : AppCompatActivity() {
             else if(email == "null")
                 Toast.makeText(binding.root.context, "비로그인 상태.", Toast.LENGTH_SHORT).show()
             else
-                FBRef.calendarRef.child(key).setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, email, inputTime))
+                FBRef.calendarRef.child(key).setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, email, inputTime, selectedbtn))
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)

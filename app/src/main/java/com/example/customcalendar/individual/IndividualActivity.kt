@@ -149,7 +149,7 @@ class IndividualActivity : AppCompatActivity() {
                     .push()
                     .setValue(
                         CalendarModel(
-                            startdate, enddate, starttime, endtime, plan, location, email, inputTime
+                            startdate, enddate, starttime, endtime, plan, location, email, inputTime, selectedbtn
                         )
                     )
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
