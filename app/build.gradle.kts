@@ -1,3 +1,5 @@
+import com.android.build.gradle.internal.cxx.configure.gradleLocalProperties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -16,6 +18,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "ENDPOINT_GET_HOLIDAY", gradleLocalProperties(rootDir).getProperty("endPoint.getHd"))
+        buildConfigField("String", "API_KEY", gradleLocalProperties(rootDir).getProperty("api.key"))
     }
 
     buildTypes {
@@ -36,11 +41,10 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        viewBinding = true
+        buildConfig = true
     }
 
-    buildFeatures {
-        viewBinding = true
-    }
 }
 
 dependencies {
@@ -62,4 +66,9 @@ dependencies {
     implementation ("com.google.firebase:firebase-storage-ktx:20.2.1")
     implementation ("com.firebaseui:firebase-ui-storage:8.0.2")
     implementation ("com.google.android.material:material:1.6.1") // NavigationView
+
+    implementation ("com.google.code.gson:gson:2.8.7")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+
 }

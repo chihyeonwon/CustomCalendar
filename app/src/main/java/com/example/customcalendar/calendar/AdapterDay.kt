@@ -176,6 +176,10 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
         }
         FBRef.calendarRef.addValueEventListener(planListener)
     }
+
+    private fun getholiday(){
+
+    }
 /*
 
     private fun getPlanData(holder: DayView, position: Int, planData: MutableList<CalendarModel>) { //파이어베이스에서 일정 가져오기
