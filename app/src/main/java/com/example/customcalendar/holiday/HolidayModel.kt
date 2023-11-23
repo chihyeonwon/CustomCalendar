@@ -1,10 +1,7 @@
 package com.example.customcalendar.holiday
 
 data class HolidayModel(
-    val holiKind: String = "",
-    val holiName: String = "",
-    val isHoli: String = "",
-    val holiDate: String = "",
-    val seq: String = "",
-    val Numofholi: Int = 0
+    val localdate : String = "", // 날짜
+    val isHoliday : String = "", // 휴일인지
+    val dateName : String = "" // 이름
 )

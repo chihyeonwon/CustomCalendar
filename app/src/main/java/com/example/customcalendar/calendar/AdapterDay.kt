@@ -4,15 +4,20 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Color
 import android.media.Image
+import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.R
 import com.example.customcalendar.databinding.DayAdapterBinding
+import com.example.customcalendar.holiday.HolidayModel
 import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.individual.IndividualActivity
 import com.example.customcalendar.individual.PlanAdapter
@@ -32,10 +37,11 @@ import java.util.Date
 import java.util.Locale
 
 
-class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:Int): RecyclerView.Adapter<AdapterDay.DayView>() {
+class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:Int, val holiday:MutableList<HolidayModel>): RecyclerView.Adapter<AdapterDay.DayView>() {
     val ROW = 6
     var selectedDate = LocalDate.now()
     val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+    val holiformat = SimpleDateFormat("yyyyMMdd", Locale.getDefault())
     private val keyvalue = mutableListOf<String>()
     private var tmpPosition = 0
     private val TAG = AdapterDay::class.java.simpleName
@@ -92,7 +98,6 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             //Toast.makeText(holder.binding.root.context, "${height}", Toast.LENGTH_SHORT).show()
             //Toast.makeText(holder.binding.root.context, "${dayList[position]}", Toast.LENGTH_SHORT).show()
         }
-
         holder.binding.itemDayText.text = dayList[position].date.toString()
         holder.binding.itemDayLayout.layoutParams.height = height/8 //높이 조절
 
@@ -108,6 +113,16 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             else -> Color.BLACK
         })
 
+        val tempdate = holiformat.format(dayList[position]).toString()
+        //Log.i(tempdate, "날짜")
+        for(item in holiday){
+            if(tempdate.equals(item.localdate)){
+                holder.binding.holiday.text = item.dateName
+                holder.binding.holiday.textSize = holder.binding.hidden.textSize
+                holder.binding.itemDayText.setTextColor(Color.RED)
+            }
+        }
+
         if(tempMonth != dayList[position].month) {
             holder.binding.itemDayText.alpha = 0.4f
         }
@@ -116,7 +131,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             holder.binding.itemDayLayout.setBackgroundResource(R.drawable.round_border)
         } // 기존 날짜 강조
 
-        getPlanData(holder, position, planData, planAdapter)
+        getPlanData(holder, position, planData, planAdapter) // 달력 셀에 데이터 가져오기
     }
 
     fun getDow(index: Int): String? {
