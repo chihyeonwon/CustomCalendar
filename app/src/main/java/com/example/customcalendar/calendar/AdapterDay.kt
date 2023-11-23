@@ -58,6 +58,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
 
     override fun onBindViewHolder(holder: DayView, position: Int) {
 
+        var isholi = 'F'
         holder.binding.itemDayLayout.setOnClickListener {
             val startView = LayoutInflater.from(holder.binding.root.context).inflate(R.layout.dayplan_dialog, null)
             val pBuilder = AlertDialog.Builder(holder.binding.root.context).setView(startView)
@@ -66,7 +67,12 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             val pdate = startView.findViewById<TextView>(R.id.date)
             val pdow = startView.findViewById<TextView>(R.id.DayOfWeek)
             val padd = startView.findViewById<ImageView>(R.id.btn_add)
+            val hidden = startView.findViewById<TextView>(R.id.holiday_name)
 
+            if(isholi.equals('T')) {
+                pdate.setTextColor(Color.RED)
+                hidden.text = holder.binding.holiday.text
+            }
             /*11.21 ,수정사항*/
             val plist = startView.findViewById<ListView>(R.id.plan_list)
 
@@ -120,6 +126,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
                 holder.binding.holiday.text = item.dateName
                 holder.binding.holiday.textSize = holder.binding.hidden.textSize
                 holder.binding.itemDayText.setTextColor(Color.RED)
+                isholi = 'T'
             }
         }
 
