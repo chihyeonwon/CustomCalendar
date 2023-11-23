@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context=".board.BoardInsideActivity"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp">
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/titleArea"
+                            android:text="title"
+                            android:textColor="@color/black"
+                            android:textSize="20sp"
+                            android:textStyle="bold"
+                            android:gravity="center"
+                            android:layout_marginRight="50dp"
+                            android:layout_marginLeft="50dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"/>
+
+                        <ImageView
+                            android:visibility="invisible"
+                            android:id="@+id/boardSettingIcon"
+                            android:layout_margin="10dp"
+                            android:layout_width="20dp"
+                            android:layout_height="40dp"
+                            android:src="@drawable/main_menu"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            tools:ignore="MissingConstraints" />
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/black">
+                </LinearLayout>
+
+                <TextView
+                    android:id="@+id/timeArea"
+                    android:text="time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:layout_margin="10dp"/>
+
+                <TextView
+                    android:id="@+id/textArea"
+                    android:text="여기는 내용 입력"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_margin="20dp"
+                    android:textColor="@color/black"
+                    android:background="@drawable/background_radius"
+                    android:padding="10dp"/>
+
+                <ImageView
+                    android:id="@+id/getImageArea"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp" />
+
+                <ListView
+                    android:id="@+id/commentLV"
+                    android:layout_width="match_parent"
+                    android:layout_height="600dp"/>
+
+            </LinearLayout>
+        </ScrollView>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_alignParentBottom="true"
+            android:background="@color/white">
+
+            <EditText
+                android:id="@+id/commentArea"
+                android:hint="댓글을 입력해주세요."
+                android:layout_marginLeft="10dp"
+                android:layout_width="320dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"/>
+
+            <ImageView
+                android:id="@+id/commentBtn"
+                android:src="@drawable/btnwrite"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+        </LinearLayout>
+    </RelativeLayout>
+</layout>

@@ -3,15 +3,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/item_day_layout"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="match_parent"
     android:layout_marginTop="1dp"
     android:layout_marginRight="1dp"
-    android:gravity="right">
+    android:background="?attr/selectableItemBackground"
+    android:gravity="right"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/item_day_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="5dp"
         android:text="9"
         android:textSize="16sp" />
+    <TextView
+        android:id="@+id/holiday"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:textSize="0sp"
+        android:visibility="invisible"/>
+
+    <ListView
+        android:id="@+id/planList"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:gravity="right" />
+
 </LinearLayout>
