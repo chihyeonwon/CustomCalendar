@@ -64,12 +64,13 @@
                     app:layout_constraintTop_toTopOf="parent">
 
                     <EditText
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
                         android:id="@+id/search"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:hint="친구추가 할 이메일을 입력하세요"></EditText>
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:hint="친구추가 할 이메일을 입력하세요"
+                        android:text=""></EditText>
 
                     <androidx.appcompat.widget.AppCompatButton
                         android:layout_marginRight="10dp"
