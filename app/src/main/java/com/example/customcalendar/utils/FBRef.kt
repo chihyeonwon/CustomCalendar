@@ -28,5 +28,6 @@ class FBRef {
 
         val friendRef = database.getReference("friend")
 
+        val viewRef = database.getReference("view")
     }
 }

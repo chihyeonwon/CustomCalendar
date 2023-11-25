@@ -30,9 +30,6 @@
             android:name=".friend.FriendCalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".menu.AddFriendActivity"
-            android:exported="false" />
-        <activity
             android:name=".auth.AccountActivity"
             android:exported="false" />
         <activity

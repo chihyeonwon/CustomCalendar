@@ -30,8 +30,6 @@ class AccountActivity : AppCompatActivity() {
 
     private lateinit var auth: FirebaseAuth
 
-    private lateinit var key1 : String
-
     val user = FirebaseAuth.getInstance().currentUser
     val email = user?.email.toString()
 
@@ -39,6 +37,7 @@ class AccountActivity : AppCompatActivity() {
     val date = Date(creationTimestamp!!)
     val formatter = SimpleDateFormat("yyyy년 MM월 dd일", Locale.KOREA)
     val formattedDate = formatter.format(date)
+    private val keyvalue = mutableListOf<String>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,10 +51,8 @@ class AccountActivity : AppCompatActivity() {
 
         binding.joinDay.text = "가입일 : ${formattedDate}"
 
-        key1 = intent.getStringExtra("key1").toString()
-
         // BoardListLVAdpater와 연결
-        requestRVAdatper = RequestListLVAdapter(requestList, key1)
+        requestRVAdatper = RequestListLVAdapter(requestList, keyvalue)
         binding.requestListView.adapter = requestRVAdatper
 
 
@@ -83,6 +80,7 @@ class AccountActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 requestList.clear()
+                keyvalue.clear()
 
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
@@ -90,6 +88,7 @@ class AccountActivity : AppCompatActivity() {
                     val item = dataModel.getValue(RequestModel::class.java)
                     if(item?.to.toString().equals(email.toString())) {
                         requestList.add(item!!)
+                        keyvalue.add(dataModel.key.toString())
                     }
 
                     Log.d(TAG, item.toString())

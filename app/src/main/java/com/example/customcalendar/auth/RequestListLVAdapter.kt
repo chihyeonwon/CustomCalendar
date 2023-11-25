@@ -10,18 +10,21 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import com.example.customcalendar.R
+import com.example.customcalendar.calendar.MainActivity
 import com.example.customcalendar.friend.FriendModel
 import com.example.customcalendar.menu.UserModel
 import com.example.customcalendar.utils.FBAuth
 import com.example.customcalendar.utils.FBRef
 import com.google.firebase.auth.FirebaseAuth
 
-class RequestListLVAdapter(val requestList : MutableList<RequestModel>, val key1: String): BaseAdapter()
+class RequestListLVAdapter(val requestList : MutableList<RequestModel>, val keyvalue :MutableList<String>): BaseAdapter()
 {
     private lateinit var auth: FirebaseAuth
 
     val user = FirebaseAuth.getInstance().currentUser
     val email = user?.email.toString()
+
+
     override fun getCount(): Int {
         return requestList.size
     }
@@ -52,13 +55,17 @@ class RequestListLVAdapter(val requestList : MutableList<RequestModel>, val key1
         // 친구 수락 버튼을 눌렀을 때
         view?.findViewById<Button>(R.id.accept)?.setOnClickListener {
 
-            FBRef.friendRef.push()
-                .setValue(FriendModel(email, requestList[position].from))
 
-            FBRef.friendRef.push()
-                .setValue(FriendModel(requestList[position].from, email))
+            FBRef
+                .friendRef
+                .push()
+                .setValue(FriendModel(email, requestList[position].from, "true"))
 
-            FBRef.requestRef.removeValue()
+            FBRef.friendRef
+                .push()
+                .setValue(FriendModel(requestList[position].from, email, "true"))
+
+            FBRef.requestRef.child(keyvalue[position]).removeValue()
 
             /*if(requestID!!.text == requestList[position].from) {
                 itemLinearLayoutView?.visibility=View.INVISIBLE*/
