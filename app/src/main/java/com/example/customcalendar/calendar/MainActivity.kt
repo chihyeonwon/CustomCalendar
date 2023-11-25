@@ -97,12 +97,7 @@ class MainActivity : AppCompatActivity() {
             search = binding.search.text.toString()
 
             Log.d(TAG, friendList.toString())
-            
-            if(search == "") {
-                Toast
-                    .makeText(this, "친구추가 할 이메일을 입력하세요", Toast.LENGTH_SHORT)
-                    .show()
-            }
+
 
             if(user != null) {
                 if(friendList.contains(FriendModel(email.toString(), search, "true"))
@@ -115,6 +110,10 @@ class MainActivity : AppCompatActivity() {
                 {
                     Toast
                         .makeText(this,"자기 자신은 친구로 등록할 수 없습니다.",Toast.LENGTH_SHORT)
+                        .show()
+                } else if(search == "") {
+                    Toast
+                        .makeText(this, "친구추가 할 이메일을 입력하세요", Toast.LENGTH_SHORT)
                         .show()
                 } else {
                     Toast
