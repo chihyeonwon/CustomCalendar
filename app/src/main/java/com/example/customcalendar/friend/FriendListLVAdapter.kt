@@ -16,14 +16,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.R
 import com.example.customcalendar.utils.FBAuth
 import com.example.customcalendar.utils.FBRef
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 
 
-class FriendListLVAdapter(val friendList : MutableList<FriendModel>): BaseAdapter() {
+class FriendListLVAdapter(val friendList : MutableList<FriendModel>, val keyvalue : MutableList<String>): BaseAdapter() {
 
     private val TAG = FriendListLVAdapter::class.java.simpleName
+    val user = FirebaseAuth.getInstance().currentUser
+
+    val email = user?.email
     override fun getCount(): Int {
         return friendList.size
     }
@@ -50,14 +54,24 @@ class FriendListLVAdapter(val friendList : MutableList<FriendModel>): BaseAdapte
         val itemLinearLayoutView = view?.findViewById<LinearLayout>(R.id.friendList)
         friendID!!.text = friendList[position].friendEmail
 
-
         switch?.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 /*val intent = Intent(view?.context, FriendCalendarActivity::class.java)
                 intent.putExtra("friendEmail", friendList[position].friendEmail.toString())
                 view?.context?.startActivity(intent)*/
 
-                val ref = FBRef.calendarRef.addValueEventListener(object : ValueEventListener {
+                FBRef
+                    .friendRef
+                    .child(keyvalue[position])
+                    .setValue(
+                        FriendModel(
+                            email.toString(),
+                            friendList[position].friendEmail,
+                            "true"
+                        )
+                    )
+
+                FBRef.calendarRef.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         for (data in snapshot.children) {
                             val key = data.key
@@ -75,10 +89,23 @@ class FriendListLVAdapter(val friendList : MutableList<FriendModel>): BaseAdapte
 
                 Toast.makeText(view?.context, "${friendList[position].friendEmail}의 일정 데이터를 불러옵니다.", Toast.LENGTH_SHORT).show()
             } else {
+
+                FBRef
+                    .friendRef
+                    .child(keyvalue[position])
+                    .setValue(
+                        FriendModel(
+                            email.toString(),
+                            friendList[position].friendEmail,
+                            "false"
+                        )
+                    )
+
                 Toast.makeText(view?.context, "Switch is OFF", Toast.LENGTH_SHORT).show()
             }
         }
 
         return view!!
     }
+
 }
