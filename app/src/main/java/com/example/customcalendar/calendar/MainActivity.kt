@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
@@ -56,16 +57,15 @@ class MainActivity : AppCompatActivity() {
 
     private val userList = mutableListOf<UserModel>()
 
-    private lateinit var key1:String
-    private val boardKeyList = mutableListOf<String>()
-
     private lateinit var userRVAdatper: UserListLVAdapter
-
 
     private val friendList = mutableListOf<FriendModel>()
 
     private lateinit var friendRVAdatper: FriendListLVAdapter
 
+    private lateinit var search :String
+
+    private val keyvalue = mutableListOf<String>()
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,58 +86,48 @@ class MainActivity : AppCompatActivity() {
         val navigationView: NavigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
 
-        // UserListLVAdpater와 연결
+        /*// UserListLVAdpater와 연결
         userRVAdatper = UserListLVAdapter(userList)
-        binding.userListView.adapter = userRVAdatper
+        binding.userListView.adapter = userRVAdatper*/
 
 
-        binding.searchBtn.setOnClickListener {
+        binding.addBtn.setOnClickListener {
+
+            search = binding.search.text.toString()
+
             if(user != null) {
-                getFBUserData()
+                if(friendList.contains(FriendModel(email.toString(),search)) &&
+                    friendList.contains(FriendModel(search, email.toString())))
+                {
+                    Toast
+                        .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
+                        .show()
+                } else if(email.toString() == search)
+                {
+                    Toast
+                        .makeText(this,"자기 자신은 친구로 등록할 수 없습니다.",Toast.LENGTH_SHORT)
+                        .show()
+                }  else if(!friendList.contains(FriendModel(email.toString(),search)) &&
+                    !friendList.contains(FriendModel(search, email.toString()))){
+                    Toast
+                        .makeText(this, "${search}에게 친구요청을 보냈습니다.",Toast.LENGTH_SHORT)
+                        .show()
+                    FBRef.requestRef
+                        .push()
+                        .setValue(RequestModel(email.toString(), search))
+                } else {
+                    Toast
+                        .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
+                        .show()
+                }
             } else {
                 Toast.makeText(this, "비로그인상태입니다.", Toast.LENGTH_SHORT).show()
             }
         }
 
-        
-        // 키부터 생성하고 데이터베이스에 저장하도록 수정
-        key1 = FBRef
-            .requestRef
-            .push()
-            .key.toString()
-
-        binding.userListView.setOnItemClickListener { parent, view, position, id ->
-
-            // 이미 친구라면 요청하지 못하고 친구가 아니라면 요청을 보냄
-            if(friendList.contains(FriendModel(email.toString(),userList[position].userID.toString())) &&
-                friendList.contains(FriendModel(userList[position].userID.toString(), email.toString())))
-            {
-                Toast
-                    .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
-                    .show()
-            } else if(email.toString() == userList[position].userID.toString())
-            {
-                Toast
-                    .makeText(this,"자기 자신은 친구로 등록할 수 없습니다.",Toast.LENGTH_SHORT)
-                    .show()
-            }  else if(!friendList.contains(FriendModel(email.toString(),userList[position].userID.toString())) &&
-                !friendList.contains(FriendModel(userList[position].userID.toString(), email.toString()))){
-                Toast
-                    .makeText(this, "${userList[position].userID.toString()}에게 친구요청을 보냈습니다.",Toast.LENGTH_SHORT)
-                    .show()
-                FBRef.requestRef
-                    .push()
-                    .setValue(RequestModel(email.toString(),userList[position].userID.toString()))
-            } else {
-                Toast
-                    .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
-                    .show()
-            }
-
-        }
 
         // FriendListLVAdapter와 연결
-        friendRVAdatper = FriendListLVAdapter(friendList)
+        friendRVAdatper = FriendListLVAdapter(friendList, keyvalue)
 
         binding.friendListView.adapter = friendRVAdatper
 
@@ -145,15 +135,6 @@ class MainActivity : AppCompatActivity() {
         if(user != null) {
             getFBfriendData()
         }
-
-
-        /*  binding.friendListView.setOnItemClickListener { parent, view, position, id ->
-              Toast
-                  .makeText(this, "${friendList[position].friendEmail}의 달력으로 이동합니다.",Toast.LENGTH_SHORT)
-                  .show()
-              val intent = Intent(this@MainActivity, FriendCalendarActivity::class.java)
-              startActivity(intent)
-          }*/
 
 
         // 계정 버튼 클릭했을 때 로그인 액티비티로 이동
@@ -172,12 +153,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-
-        /*// 게시판페이지(BoardActivity)로 이동
-   `x     findViewById<ImageView>(R.id.board).setOnClickListener {
-            val intent = Intent(this, BoardActivity::class.java)
-            startActivity(intent)
-        }*/
 
         // 액션바에 toolbar 셋팅
         setSupportActionBar(toolbar)
@@ -227,8 +202,6 @@ class MainActivity : AppCompatActivity() {
 
         val snap = PagerSnapHelper()
         snap.attachToRecyclerView(binding.customCalendar)
-
-        /*getFBBoardData()*/
     }//onCreate
 
     // 툴바 메뉴 버튼이 클릭 됐을 때 실행하는 함수
@@ -330,6 +303,7 @@ class MainActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 friendList.clear()
+                keyvalue.clear()
 
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
@@ -342,6 +316,8 @@ class MainActivity : AppCompatActivity() {
 
                     // 리스트에서 friendEmail 즉 데이터베이스의 젤 앞 값이 내 이메일과 같으면 리스트에서 삭제
                     friendList.removeIf { it.friendEmail == email }
+
+                    keyvalue.add(dataModel.key.toString())
                 }
 
                 // userRVAdatper 동기화
