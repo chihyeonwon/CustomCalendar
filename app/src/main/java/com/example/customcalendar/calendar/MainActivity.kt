@@ -96,8 +96,7 @@ class MainActivity : AppCompatActivity() {
             search = binding.search.text.toString()
 
             if(user != null) {
-                if(friendList.contains(FriendModel(email.toString(),search)) &&
-                    friendList.contains(FriendModel(search, email.toString())))
+                if(friendList.contains(FriendModel(email.toString(), search.toString(),"true")))
                 {
                     Toast
                         .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
