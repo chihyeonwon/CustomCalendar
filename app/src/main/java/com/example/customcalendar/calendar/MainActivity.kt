@@ -27,6 +27,7 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import com.example.customcalendar.auth.AccountActivity
 import com.example.customcalendar.auth.LoginActivity
+import com.example.customcalendar.auth.RequestListLVAdapter
 import com.example.customcalendar.auth.RequestModel
 import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.friend.FriendCalendarActivity
@@ -95,8 +96,11 @@ class MainActivity : AppCompatActivity() {
 
             search = binding.search.text.toString()
 
+            Log.d(TAG, friendList.toString())
+
             if(user != null) {
-                if(friendList.contains(FriendModel(email.toString(), search.toString(),"true")))
+                if(friendList.contains(FriendModel(email.toString(), search, "true"))
+                    || friendList.contains(FriendModel(email.toString(), search, "false")))
                 {
                     Toast
                         .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
@@ -106,18 +110,13 @@ class MainActivity : AppCompatActivity() {
                     Toast
                         .makeText(this,"자기 자신은 친구로 등록할 수 없습니다.",Toast.LENGTH_SHORT)
                         .show()
-                }  else if(!friendList.contains(FriendModel(email.toString(),search)) &&
-                    !friendList.contains(FriendModel(search, email.toString()))){
+                } else {
                     Toast
                         .makeText(this, "${search}에게 친구요청을 보냈습니다.",Toast.LENGTH_SHORT)
                         .show()
                     FBRef.requestRef
                         .push()
                         .setValue(RequestModel(email.toString(), search))
-                } else {
-                    Toast
-                        .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
-                        .show()
                 }
             } else {
                 Toast.makeText(this, "비로그인상태입니다.", Toast.LENGTH_SHORT).show()
@@ -352,5 +351,4 @@ class MainActivity : AppCompatActivity() {
             //권한 비허용
         }
     }
-
 }
