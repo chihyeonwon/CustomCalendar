@@ -153,12 +153,9 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             Log.i(item.myEmail, "세팅2")
         }
 
-        Timer().schedule(2000){
+        Timer().schedule(2000){ //딜레이
             getPlanData(holder, position, planData, planAdapter) // 달력 셀에 데이터 가져오기
         }
-
-
-
     }
 
     fun getDow(index: Int): String? {
