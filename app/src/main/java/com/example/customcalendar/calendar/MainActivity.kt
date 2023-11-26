@@ -61,9 +61,11 @@ class MainActivity : AppCompatActivity() {
 
     private val userList = ArrayList<String>()
 
-    private lateinit var userRVAdatper: UserListLVAdapter
+    private val requestList = mutableListOf<RequestModel>()
 
     private val friendList = mutableListOf<FriendModel>()
+
+    private lateinit var userRVAdatper: UserListLVAdapter
 
     private lateinit var friendRVAdatper: FriendListLVAdapter
 
@@ -105,12 +107,12 @@ class MainActivity : AppCompatActivity() {
             }
         }
         getFBUserData()
-
+        getFBRequestData()
 
         binding.addBtn.setOnClickListener {
-            getFBUserData()
 
             Log.d(TAG, userList.toString())
+            Log.d(TAG, requestList.toString())
 
             search = binding.search.text.toString()
             val myinf1:FriendModel = FriendModel(email.toString(), search, "true")
@@ -131,6 +133,11 @@ class MainActivity : AppCompatActivity() {
                     Toast
                         .makeText(this,"친구추가 할 이메일을 입력하세요.",Toast.LENGTH_SHORT)
                         .show()
+
+                } else if(requestList.contains(RequestModel(email.toString(), search))) {
+                    Toast
+                        .makeText(this, "친구요청은 한 번만 가능합니다.",Toast.LENGTH_SHORT)
+                        .show()
                 } else if(!friendList.contains(FriendModel(email.toString(),search)) &&
                     !friendList.contains(FriendModel(search, email.toString())) &&
                     userList.contains(search)){
@@ -141,10 +148,10 @@ class MainActivity : AppCompatActivity() {
                         .push()
                         .setValue(RequestModel(email.toString(), search))
                 } else {
-                    Toast
-                        .makeText(this, "없는 사용자입니다..", Toast.LENGTH_SHORT)
-                        .show()
-                }
+                        Toast
+                            .makeText(this, "없는 사용자입니다..", Toast.LENGTH_SHORT)
+                            .show()
+                    }
             } else {
                 Toast.makeText(this, "비로그인상태입니다.", Toast.LENGTH_SHORT).show()
             }
@@ -283,6 +290,32 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun getFBRequestData() {
+
+        val postListner = object: ValueEventListener {
+            override fun onDataChange(dataSnapshot: DataSnapshot) {
+
+                requestList.clear()
+
+                // dataModel에 있는 데이터를 하나씩 가져오는 부분
+                for(dataModel in dataSnapshot.children) {
+
+                    val item = dataModel.getValue(RequestModel::class.java)
+                    requestList.add(item!!)
+                }
+
+                /*// requestRVAdatper 동기화
+                requestRVAdatper.notifyDataSetChanged()*/
+            }
+
+            override fun onCancelled(databaseError: DatabaseError) {
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
+            }
+        }
+        FBRef.requestRef.addValueEventListener(postListner)
+
+    }
+
 
     private fun getFBUserData() {
 
@@ -296,7 +329,6 @@ class MainActivity : AppCompatActivity() {
 
                     val item = dataModel.getValue(UserModel::class.java)
                     userList.add(item!!.userID)
-                    Log.d(TAG, userList.toString())
                 }
 
                 /*// userRVAdatper 동기화
