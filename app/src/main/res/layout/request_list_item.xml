@@ -7,38 +7,48 @@
     android:orientation="horizontal">
 
     <TextView
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="30dp"
         android:gravity="center"
-        android:layout_marginRight="50dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="10dp"
         android:id="@+id/requestID"
-        android:text="title"
+        android:text="email"
         android:textSize="24sp"
         android:textColor="@color/black"
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
+    <TextView
+        android:id="@+id/hidden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:visibility="invisible"
+        android:text="" />
+
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@color/black"
         android:id="@+id/accept"
         android:text="수락"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content">
     </androidx.appcompat.widget.AppCompatButton>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:layout_margin="10dp"
+        android:gravity="center"
+        android:layout_gravity="center"
+        android:layout_marginRight="5dp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:background="@color/black"
         android:id="@+id/refuse"
         android:text="거절"
-        android:layout_width="70dp"
+        android:layout_width="50dp"
         android:layout_height="wrap_content">
     </androidx.appcompat.widget.AppCompatButton>
 
