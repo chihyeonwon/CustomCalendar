@@ -22,7 +22,7 @@ import com.google.firebase.auth.FirebaseAuth
 class IndividualActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityIndividualBinding
-    private lateinit var selectedbtn: String
+    private var selectedbtn: String = "NaN"
 
     private val TAG = IndividualActivity::class.java.simpleName
 

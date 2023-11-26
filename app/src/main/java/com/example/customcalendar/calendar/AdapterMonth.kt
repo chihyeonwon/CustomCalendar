@@ -1,12 +1,22 @@
 package com.example.customcalendar.calendar
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.BuildConfig.API_KEY
+import com.example.customcalendar.board.BoardModel
 import com.example.customcalendar.databinding.MonthAdapterBinding
+import com.example.customcalendar.friend.FriendListLVAdapter
+import com.example.customcalendar.friend.FriendModel
 import com.example.customcalendar.holiday.HolidayModel
+import com.example.customcalendar.individual.CalendarModel
+import com.example.customcalendar.utils.FBRef
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.ValueEventListener
 import org.json.JSONObject
 import org.w3c.dom.Document
 import org.w3c.dom.Element
@@ -19,11 +29,10 @@ import java.util.*
 import javax.xml.parsers.DocumentBuilder
 import javax.xml.parsers.DocumentBuilderFactory
 
-class AdapterMonth(val height:Int): RecyclerView.Adapter<AdapterMonth.MonthView>() {
+class AdapterMonth(val height:Int, val friendList: MutableList<FriendModel>): RecyclerView.Adapter<AdapterMonth.MonthView>() {
     val center = Int.MAX_VALUE / 2
     private var calendar = Calendar.getInstance()
     private val holiday = mutableListOf<HolidayModel>()
-
     inner class MonthView(val binding: MonthAdapterBinding): RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MonthView {
@@ -54,7 +63,7 @@ class AdapterMonth(val height:Int): RecyclerView.Adapter<AdapterMonth.MonthView>
             calendar.add(Calendar.WEEK_OF_MONTH, 1)
         }
         val dayListManager = GridLayoutManager(holder.binding.root.context, 7)
-        val dayListAdapter = AdapterDay(tempMonth, dayList, height, holiday)
+        val dayListAdapter = AdapterDay(tempMonth, dayList, height, holiday, friendList)
 
         holder.binding.itemMonthDayList.apply {
             layoutManager = dayListManager
@@ -109,6 +118,7 @@ class AdapterMonth(val height:Int): RecyclerView.Adapter<AdapterMonth.MonthView>
 
     }
 
+    
     override fun getItemCount(): Int {
         return Int.MAX_VALUE
     }

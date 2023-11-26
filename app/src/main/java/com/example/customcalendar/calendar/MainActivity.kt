@@ -7,31 +7,29 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.ActionBar
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.PagerSnapHelper
-import com.example.customcalendar.R
-import com.example.customcalendar.databinding.ActivityMainBinding
+import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.PagerSnapHelper
+import com.example.customcalendar.R
 import com.example.customcalendar.auth.AccountActivity
 import com.example.customcalendar.auth.LoginActivity
 import com.example.customcalendar.auth.RequestModel
-import com.example.customcalendar.individual.CalendarModel
-import com.example.customcalendar.friend.FriendCalendarActivity
+import com.example.customcalendar.databinding.ActivityMainBinding
 import com.example.customcalendar.friend.FriendListLVAdapter
 import com.example.customcalendar.friend.FriendModel
+import com.example.customcalendar.individual.CalendarModel
 import com.example.customcalendar.menu.UserListLVAdapter
 import com.example.customcalendar.menu.UserModel
 import com.example.customcalendar.notification.NotiActivity
@@ -41,6 +39,12 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlin.concurrent.thread
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
@@ -90,14 +94,24 @@ class MainActivity : AppCompatActivity() {
         userRVAdatper = UserListLVAdapter(userList)
         binding.userListView.adapter = userRVAdatper*/
 
+        // myEmail과 friendEmail이 포함되었을 때
+
+        CoroutineScope(Dispatchers.IO).launch {
+            runBlocking {
+                if(user != null) {
+                    getFBfriendData()
+                }
+            }
+        }
+
 
         binding.addBtn.setOnClickListener {
-
             search = binding.search.text.toString()
+            val myinf1:FriendModel = FriendModel(email.toString(), search, "true")
+            val myinf2:FriendModel = FriendModel(email.toString(), search, "false")
 
             if(user != null) {
-                if(friendList.contains(FriendModel(email.toString(),search)) &&
-                    friendList.contains(FriendModel(search, email.toString())))
+                if(friendList.contains(myinf1) || friendList.contains(myinf2))
                 {
                     Toast
                         .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
@@ -125,17 +139,10 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         // FriendListLVAdapter와 연결
         friendRVAdatper = FriendListLVAdapter(friendList, keyvalue)
 
         binding.friendListView.adapter = friendRVAdatper
-
-        // myEmail과 friendEmail이 포함되었을 때
-        if(user != null) {
-            getFBfriendData()
-        }
-
 
         // 계정 버튼 클릭했을 때 로그인 액티비티로 이동
         binding.navigationView.getHeaderView(0).setOnClickListener {
@@ -192,7 +199,7 @@ class MainActivity : AppCompatActivity() {
         }//setNavigationItemSelectedListener
 
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val monthListAdapter = AdapterMonth(height)
+        val monthListAdapter = AdapterMonth(height, friendList)
 
         binding.customCalendar.apply { // ViewBinding을 통해 calendar_custom 레이아웃 요소에 접근
             layoutManager = monthListManager
@@ -297,8 +304,7 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    private fun getFBfriendData() {
-
+    private suspend fun getFBfriendData() {
         val postListner = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
@@ -310,14 +316,16 @@ class MainActivity : AppCompatActivity() {
                     val item = dataModel.getValue(FriendModel::class.java)
 
                     // 친구이메일에 내 이메일이 있거나 이메일에 내 이메일이 있어야 리스트에 추가함
-                    if(item!!.friendEmail == email || item!!.myEmail == email) {
+                    if(item!!.myEmail == email) {
+                        //Log.i(item.friendEmail, "친구")
                         friendList.add(item!!)
+                        keyvalue.add(dataModel.key.toString())
                     }
 
                     // 리스트에서 friendEmail 즉 데이터베이스의 젤 앞 값이 내 이메일과 같으면 리스트에서 삭제
-                    friendList.removeIf { it.friendEmail == email }
+                    //friendList.removeIf { it.friendEmail == email }
 
-                    keyvalue.add(dataModel.key.toString())
+
                 }
 
                 // userRVAdatper 동기화
@@ -330,7 +338,6 @@ class MainActivity : AppCompatActivity() {
         }
         FBRef.friendRef.addValueEventListener(postListner)
     }
-
 
     /** Android 13 PostNotification */
     private fun checkAppPushNotification() {

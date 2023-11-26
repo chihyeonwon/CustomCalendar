@@ -68,6 +68,8 @@ dependencies {
     implementation ("com.firebaseui:firebase-ui-storage:8.0.2")
     implementation ("com.google.android.material:material:1.6.1") // NavigationView
 
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.2")
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.4.2")
     // Firebase Cloud Messaging
     implementation ("com.google.firebase:firebase-messaging-ktx:23.2.1")
     implementation ("com.google.firebase:firebase-analytics-ktx:21.3.0")

@@ -30,6 +30,8 @@ class FriendCalendarActivity : AppCompatActivity() {
 
     val email = user?.email
 
+    val showFriends = mutableListOf<FriendModel>()
+
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
         val height = resources.displayMetrics.heightPixels
@@ -42,7 +44,7 @@ class FriendCalendarActivity : AppCompatActivity() {
         findViewById<TextView>(R.id.friendEmail).text = "${friendEmail.toString()}의 캘린더입니다."
 
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
-        val monthListAdapter = AdapterMonth(height)
+        val monthListAdapter = AdapterMonth(height, showFriends)
 
         binding.customCalendar.apply { // ViewBinding을 통해 calendar_custom 레이아웃 요소에 접근
             layoutManager = monthListManager
