@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 
     val email = user?.email
 
-    private val userList = mutableListOf<UserModel>()
+    private val userList = ArrayList<String>()
 
     private lateinit var userRVAdatper: UserListLVAdapter
 
@@ -70,6 +70,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var search :String
 
     private val keyvalue = mutableListOf<String>()
+
 
     @SuppressLint("ResourceType")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -103,9 +104,13 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+        getFBUserData()
 
 
         binding.addBtn.setOnClickListener {
+            getFBUserData()
+
+            Log.d(TAG, userList.toString())
 
             search = binding.search.text.toString()
             val myinf1:FriendModel = FriendModel(email.toString(), search, "true")
@@ -122,8 +127,13 @@ class MainActivity : AppCompatActivity() {
                     Toast
                         .makeText(this,"자기 자신은 친구로 등록할 수 없습니다.",Toast.LENGTH_SHORT)
                         .show()
-                }  else if(!friendList.contains(FriendModel(email.toString(),search)) &&
-                    !friendList.contains(FriendModel(search, email.toString()))){
+                }  else if(search == "") {
+                    Toast
+                        .makeText(this,"친구추가 할 이메일을 입력하세요.",Toast.LENGTH_SHORT)
+                        .show()
+                } else if(!friendList.contains(FriendModel(email.toString(),search)) &&
+                    !friendList.contains(FriendModel(search, email.toString())) &&
+                    userList.contains(search)){
                     Toast
                         .makeText(this, "${search}에게 친구요청을 보냈습니다.",Toast.LENGTH_SHORT)
                         .show()
@@ -132,7 +142,7 @@ class MainActivity : AppCompatActivity() {
                         .setValue(RequestModel(email.toString(), search))
                 } else {
                     Toast
-                        .makeText(this, "이미 친구입니다.", Toast.LENGTH_SHORT)
+                        .makeText(this, "없는 사용자입니다..", Toast.LENGTH_SHORT)
                         .show()
                 }
             } else {
@@ -284,17 +294,13 @@ class MainActivity : AppCompatActivity() {
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
 
-                    val searchEdit = binding.search.text
-
                     val item = dataModel.getValue(UserModel::class.java)
-                    Log.d(TAG, item?.userID.toString())
-                    if(item?.userID.toString().contains(binding.search.text) && searchEdit.toString() != "") {
-                        userList.add(item!!)
-                    }
+                    userList.add(item!!.userID)
+                    Log.d(TAG, userList.toString())
                 }
 
-                // userRVAdatper 동기화
-                userRVAdatper.notifyDataSetChanged()
+                /*// userRVAdatper 동기화
+                userRVAdatper.notifyDataSetChanged()*/
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -361,5 +367,6 @@ class MainActivity : AppCompatActivity() {
             //권한 비허용
         }
     }
+
 
 }
