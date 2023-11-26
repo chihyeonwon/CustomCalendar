@@ -43,7 +43,8 @@ class NotiListLVAdapter(val context: Context, val notiList : MutableList<Calenda
 
         val DDay = view?.findViewById<TextView>(R.id.DDay)
         val notiPlan =view?.findViewById<TextView>(R.id.notiPlan)
-        val notiDay = view?.findViewById<TextView>(R.id.notiDay)
+        val Location = view?.findViewById<TextView>(R.id.location)
+        val writer = view?.findViewById<TextView>(R.id.writer)
 
         // 오늘 날짜
         val currentDate = LocalDate.now()
@@ -55,39 +56,38 @@ class NotiListLVAdapter(val context: Context, val notiList : MutableList<Calenda
         var diffInDays = diffInMilliSec / (1000 * 60 * 60 * 24)
 
         val itemLinearLayoutView = view?.findViewById<LinearLayout>(R.id.notiList)
-        notiPlan!!.text = notiList[position].plan
-        notiDay!!.text = notiList[position].startDate
+        notiPlan!!.text = "일정 : ${notiList[position].plan}"
+        Location!!.text = "장소 : ${notiList[position].location}"
+        writer!!.text = "작성자 : ${notiList[position].email}"
 
         // 만약에 DDay가 음수일 때는 절댓값을 취한뒤 + 기호를, 양수일 때는 -기호를 붙여서 출력한다.
         if (diffInDays < 0) {
             diffInDays = Math.abs(diffInDays)
-            DDay!!.text = "D+${diffInDays.toString()}"
+            DDay!!.text = "D + ${diffInDays.toString()}"
         } else {
-            DDay!!.text = "D-${diffInDays.toString()}"
+            DDay!!.text = "D - ${diffInDays.toString()}"
         }
 
         // Noti 초기화
         notificationHelper = NotificationHelper(context)
 
-        Log.d(TAG, currentDate.toString())
-        Log.d(TAG, notiList[position].startDate.toString())
-        Log.d(TAG, notiList[position].startTime.toString())
 
         if(notiList[position].startDate.contains(currentDate.toString())) {
             // 오늘 날짜와 notiList의 날짜가 같으면 알림을 발생한다.
             notiPlay(notiList[position].startDate.toString(),
                 notiList[position].plan.toString(),
-                notiList[position].startTime.toString())
+                notiList[position].startTime.toString(),
+                notiList[position].email.toString())
         }
 
         return view!!
     }
 
-    private fun notiPlay(Date: String, Plan: String, Time: String){
+    private fun notiPlay(Date: String, Plan: String, Time: String, Email: String){
         /*val title: String = titleEdit.text.toString()
         val message: String = messageEdit.text.toString()*/
 
-        val title = "${Date}에 일정이 있습니다."
+        val title = "${Email}는 ${Date}에 일정이 있습니다."
         val message = "${Time}부터 ${Plan} 일정이 있습니다."
 
         // 알림 호출
