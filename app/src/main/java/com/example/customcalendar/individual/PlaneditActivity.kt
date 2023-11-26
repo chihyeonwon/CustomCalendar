@@ -55,7 +55,7 @@ class PlaneditActivity : AppCompatActivity() {
                 val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
                 val selectedDay = dPicker.dayOfMonth.toString()
                 //Log.d(TAG, "Selected Date: $selectedDate")
-                findViewById<TextView>(R.id.startDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
+                findViewById<TextView>(R.id.startDate).text = selectedYear + "-" + selectedMonth +"-"+ selectedDay
                 startAlertDialog.dismiss()
                 //Toast.makeText(this, "수락", Toast.LENGTH_SHORT).show()
             }
@@ -78,7 +78,7 @@ class PlaneditActivity : AppCompatActivity() {
                 val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
                 val selectedDay = dPicker.dayOfMonth.toString()
 
-                findViewById<TextView>(R.id.endDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
+                findViewById<TextView>(R.id.endDate).text = selectedYear + "-" + selectedMonth +"-"+ selectedDay
                 endAlertDialog.dismiss()
 
             }
@@ -186,7 +186,7 @@ class PlaneditActivity : AppCompatActivity() {
                     "2" -> binding.rdgroup.check(R.id.normal)
                     "3" -> binding.rdgroup.check(R.id.low)
                 }
-
+                selectedbtn = model?.importance.toString()
                 val user = FirebaseAuth.getInstance().currentUser
                 val email = user?.email
 
