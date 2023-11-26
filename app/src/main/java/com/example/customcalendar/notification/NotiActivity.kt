@@ -6,9 +6,11 @@ import android.util.Log
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
+import com.example.customcalendar.calendar.AdapterDay
 import com.example.customcalendar.databinding.ActivityNotiBinding
 import com.example.customcalendar.friend.FriendModel
 import com.example.customcalendar.individual.CalendarModel
+import com.example.customcalendar.individual.PlanAdapter
 import com.example.customcalendar.utils.FBRef
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
@@ -28,8 +30,8 @@ class NotiActivity : AppCompatActivity() {
     val user = FirebaseAuth.getInstance().currentUser
     val email = user?.email.toString()
 
-
     private val friendList = mutableListOf<FriendModel>()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,11 +43,17 @@ class NotiActivity : AppCompatActivity() {
         notiRVAdapter = NotiListLVAdapter(this, notiList)
         binding.NotiListView.adapter = notiRVAdapter
 
+        getFBfriendData()
+
         // 파이어베이스에서 설정 날짜를 가져오는 부분
         getNotiDayData()
 
-        // 친구 데이터를 받아옴
-        getfriendNotiDayData()
+        for(item in friendList) {
+            Log.i(item.friendEmail, "세팅1")
+            Log.i(item.myEmail, "세팅2")
+        }
+
+        Log.d(TAG, friendList.toString())
 
 
         binding.NotiListView.setOnItemClickListener { parent, view, position, id ->
@@ -63,15 +71,19 @@ class NotiActivity : AppCompatActivity() {
 
                 notiList.clear()
 
-                // dataModel에 있는 데이터를 하나씩 가져오는 부분
-                for(dataModel in dataSnapshot.children) {
-
-
+                for(dataModel in dataSnapshot.children) { // 자신의 데이터 먼저 가져옴
                     val item = dataModel.getValue(CalendarModel::class.java)
-                    // 데이터베이스의 email과 현재 email이 같을 때 데이터를 리스트에 넣는다.
-                    if(item!!.email == email) {
+
+                    if(email == item?.email) { // 시작일 일치, 중복 아닌 경우
                         notiList.add(item!!)
                     }
+
+                    for(list in friendList) {
+                        if(list.friendEmail == item?.email){
+                            notiList.add(item!!)
+                        }
+                    }
+
                 }
 
                 // notiRVAdapter 동기화
@@ -89,37 +101,36 @@ class NotiActivity : AppCompatActivity() {
 
     }
 
-    private fun getfriendNotiDayData() {
-
+    private fun getFBfriendData() {
         val postListner = object: ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
-                notiList.clear()
+                friendList.clear()
+                /*keyvalue.clear()*/
 
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
+                    val item = dataModel.getValue(FriendModel::class.java)
 
-
-                    val item = dataModel.getValue(CalendarModel::class.java)
-                    // 데이터베이스의 email과 현재 email이 같을 때 데이터를 리스트에 넣는다.
-                    if(item!!.email == email) {
-                        notiList.add(item!!)
+                    // 친구이메일에 내 이메일이 있거나 이메일에 내 이메일이 있어야 리스트에 추가함
+                    if(item!!.myEmail == email) {
+                        //Log.i(item.friendEmail, "친구")
+                        friendList.add(item!!)
+                        /*keyvalue.add(dataModel.key.toString())*/
                     }
+
+
                 }
 
-                // notiRVAdapter 동기화
-                notiRVAdapter.notifyDataSetChanged()
-
-                // startDate를 기준으로 DDay가 빠른 순으로 정렬
-                notiList.sortBy { it.startDate }
+                /*// userRVAdatper 동기화
+                friendRVAdatper.notifyDataSetChanged()*/
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
                 Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
             }
         }
-        FBRef.calendarRef.addValueEventListener(postListner)
-
+        FBRef.friendRef.addValueEventListener(postListner)
     }
 }
 

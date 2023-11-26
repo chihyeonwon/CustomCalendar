@@ -255,27 +255,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getFBBoardData() {
-
-        val postListner = object: ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-
-                // calendarDataList.clear()
-
-                val dataModel = dataSnapshot.getValue(CalendarModel::class.java)
-                findViewById<TextView>(R.id.plan).setText(dataModel?.plan)
-
-
-                // calendarDataList.reverse()
-            }
-
-            override fun onCancelled(databaseError: DatabaseError) {
-                Log.w(TAG, "loadPost:onCancelled", databaseError.toException())
-            }
-        }
-        FBRef.calendarRef.addValueEventListener(postListner)
-
-    }
     class MyApplication : Application() {
 
         init{
