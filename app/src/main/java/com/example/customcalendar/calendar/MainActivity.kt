@@ -174,8 +174,12 @@ class MainActivity : AppCompatActivity() {
 
         // 알림 아이콘을 클릭했을 때 NotiActivity로 이동
         findViewById<ImageView>(R.id.noti).setOnClickListener {
-            val intent = Intent(this, NotiActivity::class.java)
-            startActivity(intent)
+            if(user != null) {
+                val intent = Intent(this, NotiActivity::class.java)
+                startActivity(intent)
+            } else {
+                Toast.makeText(this,"비로그인 상태입니다.",Toast.LENGTH_SHORT).show()
+            }
         }
 
 
