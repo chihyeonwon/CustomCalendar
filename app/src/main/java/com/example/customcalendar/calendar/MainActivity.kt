@@ -51,8 +51,6 @@ class MainActivity : AppCompatActivity() {
 
     lateinit var drawerLayout: DrawerLayout
 
-    private val calendarDataList = mutableListOf<CalendarModel>()
-
     private val TAG = MainActivity::class.java.simpleName
 
     val user = FirebaseAuth.getInstance().currentUser
@@ -64,8 +62,6 @@ class MainActivity : AppCompatActivity() {
     private val requestList = mutableListOf<RequestModel>()
 
     private val friendList = mutableListOf<FriendModel>()
-
-    private lateinit var userRVAdatper: UserListLVAdapter
 
     private lateinit var friendRVAdatper: FriendListLVAdapter
 
@@ -90,14 +86,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         val toolbar: Toolbar = findViewById(R.id.toolbar)
-        val navigationView: NavigationView = findViewById(R.id.navigationView)
         drawerLayout = findViewById(R.id.drawerLayout)
-
-        /*// UserListLVAdpater와 연결
-        userRVAdatper = UserListLVAdapter(userList)
-        binding.userListView.adapter = userRVAdatper*/
-
-        // myEmail과 friendEmail이 포함되었을 때
 
         CoroutineScope(Dispatchers.IO).launch {
             runBlocking {
@@ -110,9 +99,6 @@ class MainActivity : AppCompatActivity() {
         getFBRequestData()
 
         binding.addBtn.setOnClickListener {
-
-            Log.d(TAG, userList.toString())
-            Log.d(TAG, requestList.toString())
 
             search = binding.search.text.toString()
             val myinf1:FriendModel = FriendModel(email.toString(), search, "true")
@@ -148,10 +134,10 @@ class MainActivity : AppCompatActivity() {
                         .push()
                         .setValue(RequestModel(email.toString(), search))
                 } else {
-                        Toast
-                            .makeText(this, "없는 사용자입니다..", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+                    Toast
+                        .makeText(this, "없는 사용자입니다..", Toast.LENGTH_SHORT)
+                        .show()
+                }
             } else {
                 Toast.makeText(this, "비로그인상태입니다.", Toast.LENGTH_SHORT).show()
             }
@@ -182,7 +168,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
         // 액션바에 toolbar 셋팅
         setSupportActionBar(toolbar)
 
@@ -196,29 +181,6 @@ class MainActivity : AppCompatActivity() {
         actionBar?.setHomeAsUpIndicator(R.drawable.main_menu)
 
         actionBar?.setDisplayShowTitleEnabled(false)
-
-        //네비게이션뷰 아이템 선택 이벤트
-        if(user != null) {
-            navigationView.setNavigationItemSelectedListener(
-                object : NavigationView.OnNavigationItemSelectedListener {
-                    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-
-                        when (item.itemId) {
-                            // 친구 추가 메뉴
-                            /*R.id.addFriend -> {
-                                val intent = Intent(this@MainActivity, AddFriendActivity::class.java)
-                                startActivity(intent)
-                            }*/
-                            /*R.id.group -> {
-                                val intent = Intent(this@MainActivity, FriendActivity::class.java)
-                                startActivity(intent)
-                            }*/
-                        }
-                        return false//when
-                    }// onNavigationItemSelected
-                }//NavigationView.OnNavigationItemSelectedListener
-            )
-        }//setNavigationItemSelectedListener
 
         val monthListManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         val monthListAdapter = AdapterMonth(height, friendList)
@@ -244,12 +206,6 @@ class MainActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    // 메시지 알림
-    private fun displayMessage(message: String) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_LONG).show()
-    }
-
 
     override fun onBackPressed() { //뒤로가기 처리
         if(drawerLayout.isDrawerOpen(GravityCompat.START)){
@@ -286,9 +242,6 @@ class MainActivity : AppCompatActivity() {
                     val item = dataModel.getValue(RequestModel::class.java)
                     requestList.add(item!!)
                 }
-
-                /*// requestRVAdatper 동기화
-                requestRVAdatper.notifyDataSetChanged()*/
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -313,9 +266,6 @@ class MainActivity : AppCompatActivity() {
                     val item = dataModel.getValue(UserModel::class.java)
                     userList.add(item!!.userID)
                 }
-
-                /*// userRVAdatper 동기화
-                userRVAdatper.notifyDataSetChanged()*/
             }
 
             override fun onCancelled(databaseError: DatabaseError) {
@@ -343,11 +293,6 @@ class MainActivity : AppCompatActivity() {
                         friendList.add(item!!)
                         keyvalue.add(dataModel.key.toString())
                     }
-
-                    // 리스트에서 friendEmail 즉 데이터베이스의 젤 앞 값이 내 이메일과 같으면 리스트에서 삭제
-                    //friendList.removeIf { it.friendEmail == email }
-
-
                 }
 
                 // userRVAdatper 동기화

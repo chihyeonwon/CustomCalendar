@@ -53,9 +53,6 @@ class NotiActivity : AppCompatActivity() {
             Log.i(item.myEmail, "세팅2")
         }
 
-        Log.d(TAG, friendList.toString())
-
-
         binding.NotiListView.setOnItemClickListener { parent, view, position, id ->
             Toast
                 .makeText(this,"${notiList[position].startDate} 날짜에 알람", Toast.LENGTH_SHORT)
@@ -106,7 +103,6 @@ class NotiActivity : AppCompatActivity() {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
 
                 friendList.clear()
-                /*keyvalue.clear()*/
 
                 // dataModel에 있는 데이터를 하나씩 가져오는 부분
                 for(dataModel in dataSnapshot.children) {
@@ -118,12 +114,7 @@ class NotiActivity : AppCompatActivity() {
                         friendList.add(item!!)
                         /*keyvalue.add(dataModel.key.toString())*/
                     }
-
-
                 }
-
-                /*// userRVAdatper 동기화
-                friendRVAdatper.notifyDataSetChanged()*/
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

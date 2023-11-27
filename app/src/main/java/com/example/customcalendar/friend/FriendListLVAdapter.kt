@@ -71,22 +71,6 @@ class FriendListLVAdapter(val friendList : MutableList<FriendModel>, val keyvalu
                         )
                     )
 
-                FBRef.calendarRef.addListenerForSingleValueEvent(object : ValueEventListener {
-                    override fun onDataChange(snapshot: DataSnapshot) {
-                        for (data in snapshot.children) {
-                            val key = data.key
-                            val value = data.value
-                            Log.d(TAG, value.toString())
-                        }
-                    }
-
-                    override fun onCancelled(error: DatabaseError) {
-                        Log.w(TAG, "Failed to read value.", error.toException())
-                    }
-                })
-
-
-
                 Toast.makeText(view?.context, "${friendList[position].friendEmail}의 일정 데이터를 불러옵니다.", Toast.LENGTH_SHORT).show()
             } else {
 

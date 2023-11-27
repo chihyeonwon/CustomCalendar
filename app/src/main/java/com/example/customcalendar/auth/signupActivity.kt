@@ -35,19 +35,19 @@ class signupActivity : AppCompatActivity() {
 
             // 이메일 값이 비어있는지 확인
             if(email.isEmpty()){
-                Toast.makeText(this,"이메일을 입력해주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"이메일을 입력해주세요", Toast.LENGTH_SHORT).show()
                 var isGoToJoin = false
             } else if(password1.isEmpty()) { // password1 값이 비어있는지 확인
-                Toast.makeText(this, "Password1을 입력해주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, "Password1을 입력해주세요", Toast.LENGTH_SHORT).show()
                 var isGoToJoin = false
             } else if(password2.isEmpty()){ // password2 값이 비어있는지 확인
-                Toast.makeText(this,"Password2을 입력해주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"Password2을 입력해주세요", Toast.LENGTH_SHORT).show()
                 var isGoToJoin = false
             } else if(!password1.equals(password2)){ // password1과 password2 값이 같은지 확인
-                Toast.makeText(this,"비밀번호를 똑같이 입력해주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"비밀번호를 똑같이 입력해주세요", Toast.LENGTH_SHORT).show()
                 var isGoToJoin = false
             } else if(password1.length < 6) { // password1의 길이가 6보다 작은지 확인
-                Toast.makeText(this,"비밀번호를 6자리 이상으로 입력해주세요", Toast.LENGTH_LONG).show()
+                Toast.makeText(this,"비밀번호를 6자리 이상으로 입력해주세요", Toast.LENGTH_SHORT).show()
                 var isGoToJoin = false
             } else if(isGoToJoin) {
                 auth.createUserWithEmailAndPassword(email,password1)

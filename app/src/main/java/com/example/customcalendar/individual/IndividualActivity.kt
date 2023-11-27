@@ -52,10 +52,9 @@ class IndividualActivity : AppCompatActivity() {
                 val selectedYear = dPicker.year.toString()
                 val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
                 val selectedDay = dPicker.dayOfMonth.toString()
-                //Log.d(TAG, "Selected Date: $selectedDate")
+
                 findViewById<TextView>(R.id.startDate).text = selectedYear + "-" + selectedMonth +"-"+ selectedDay
                 startAlertDialog.dismiss()
-                //Toast.makeText(this, "수락", Toast.LENGTH_SHORT).show()
             }
             closeButton.setOnClickListener {// 취소버튼 처리
                 startAlertDialog.dismiss()
@@ -152,7 +151,6 @@ class IndividualActivity : AppCompatActivity() {
                             startdate, enddate, starttime, endtime, plan, location, email, inputTime, selectedbtn
                         )
                     )
-            //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)
 

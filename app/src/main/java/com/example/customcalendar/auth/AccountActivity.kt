@@ -90,9 +90,6 @@ class AccountActivity : AppCompatActivity() {
                         requestList.add(item!!)
                         keyvalue.add(dataModel.key.toString())
                     }
-
-                    Log.d(TAG, item.toString())
-
                 }
 
                 // userRVAdatper 동기화
