@@ -37,29 +37,19 @@ class signupActivity : AppCompatActivity() {
             if(email.isEmpty()){
                 Toast.makeText(this,"이메일을 입력해주세요", Toast.LENGTH_LONG).show()
                 var isGoToJoin = false
-            }
-            // password1 값이 비어있는지 확인
-            if(password1.isEmpty()){
-                Toast.makeText(this,"Password1을 입력해주세요", Toast.LENGTH_LONG).show()
+            } else if(password1.isEmpty()) { // password1 값이 비어있는지 확인
+                Toast.makeText(this, "Password1을 입력해주세요", Toast.LENGTH_LONG).show()
                 var isGoToJoin = false
-            }
-            // password2 값이 비어있는지 확인
-            if(password2.isEmpty()){
+            } else if(password2.isEmpty()){ // password2 값이 비어있는지 확인
                 Toast.makeText(this,"Password2을 입력해주세요", Toast.LENGTH_LONG).show()
                 var isGoToJoin = false
-            }
-            // password1과 password2 값이 같은지 확인
-            if(!password1.equals(password2)){
+            } else if(!password1.equals(password2)){ // password1과 password2 값이 같은지 확인
                 Toast.makeText(this,"비밀번호를 똑같이 입력해주세요", Toast.LENGTH_LONG).show()
                 var isGoToJoin = false
-            }
-            // password1의 길이가 6보다 작은지 확인
-            if(password1.length < 6) {
+            } else if(password1.length < 6) { // password1의 길이가 6보다 작은지 확인
                 Toast.makeText(this,"비밀번호를 6자리 이상으로 입력해주세요", Toast.LENGTH_LONG).show()
                 var isGoToJoin = false
-            }
-
-            if(isGoToJoin) {
+            } else if(isGoToJoin) {
                 auth.createUserWithEmailAndPassword(email,password1)
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
