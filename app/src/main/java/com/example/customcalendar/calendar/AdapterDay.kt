@@ -44,6 +44,7 @@ import java.util.Timer
 import kotlin.concurrent.schedule
 
 
+@Suppress("DEPRECATION")
 class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:Int, val holiday:MutableList<HolidayModel>, val friendList: MutableList<FriendModel>): RecyclerView.Adapter<AdapterDay.DayView>() {
     val ROW = 6
     var selectedDate = LocalDate.now()
@@ -144,7 +145,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             holder.binding.itemDayText.alpha = 0.4f
         }
 
-        if(today.get(Calendar.MONTH) == dayList[position].month && today.get(Calendar.DATE) == dayList[position].date) { // 오늘 날짜 강조
+        if((today.get(Calendar.MONTH) == dayList[position].month) && (today.get(Calendar.DATE) == dayList[position].date)) { // 오늘 날짜 강조
             holder.binding.itemDayLayout.setBackgroundResource(R.drawable.round_border)
         } // 기존 날짜 강조
 
