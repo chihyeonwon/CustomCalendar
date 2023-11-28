@@ -32,15 +32,14 @@ class DayPlan(val planList: MutableList<CalendarModel>): BaseAdapter()  {
         val time = view?.findViewById<TextView>(R.id.pl_time)
         val loc = view?.findViewById<TextView>(R.id.pl_loc)
         val keyTime = view?.findViewById<TextView>(R.id.input_time)
-        val uid = view?.findViewById<TextView>(R.id.uid)
         val importance = view?.findViewById<ImageView>(R.id.importanceColor)
+        val email =  view?.findViewById<TextView>(R.id.email)
         //val hidden = view?.findViewById<TextView>(R.id.hiddenValue)
 
         plan!!.text = planList[position].plan
         time!!.text = planList[position].startTime + " ~ " + planList[position].endTime
         loc!!.text = planList[position].location
         keyTime!!.text = planList[position].inputTime
-        uid!!.text = planList[position].uid
 
         when(planList[position].importance){
             "1" -> importance!!.setImageResource(R.drawable.circle_red)
@@ -48,6 +47,7 @@ class DayPlan(val planList: MutableList<CalendarModel>): BaseAdapter()  {
             "3" -> importance!!.setImageResource(R.drawable.circle_green)
             else -> importance!!.setImageResource(R.drawable.circle)
         }
+        email!!.text = planList[position].email
         //hidden!!.text = planList[position].inputTime
 
         return view!!

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.example.customcalendar.R
+import com.example.customcalendar.calendar.MainActivity
 import com.example.customcalendar.databinding.ActivitySignupBinding
 import com.example.customcalendar.menu.UserModel
 import com.example.customcalendar.utils.FBRef
@@ -63,7 +64,7 @@ class signupActivity : AppCompatActivity() {
                     .addOnCompleteListener(this) { task ->
                         if (task.isSuccessful) {
                             Toast.makeText(this, "성공", Toast.LENGTH_LONG).show()
-                            val intent = Intent(this, LoginActivity::class.java)
+                            val intent = Intent(this, MainActivity::class.java)
                             intent.flags =
                                 Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                             startActivity(intent)

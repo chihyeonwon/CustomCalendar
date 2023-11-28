@@ -7,7 +7,7 @@ data class CalendarModel (
     val endTime:String= "",
     val plan: String = "",
     val location: String = "",
-    val uid: String  = "",
+    val email: String  = "",
     val inputTime: String  = "",
     val importance: String = ""
 )

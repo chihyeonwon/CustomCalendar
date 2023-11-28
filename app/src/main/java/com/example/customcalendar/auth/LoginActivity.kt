@@ -41,20 +41,29 @@ class LoginActivity : AppCompatActivity() {
             var email = binding.emailArea.text.toString()
             var password = binding.passwordArea.text.toString()
 
-            auth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this) { task->
-                    if(task.isSuccessful) {
+            if(password.isEmpty() && email.isEmpty()) {
+                Toast.makeText(this, "이메일과 비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            } else if(email.isEmpty()) {
+                Toast.makeText(this, "이메일을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            } else if(password.isEmpty()) {
+                Toast.makeText(this, "비밀번호를 입력해주세요.", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.signInWithEmailAndPassword(email, password)
+                    .addOnCompleteListener(this) { task->
 
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
+                        if(task.isSuccessful) {
+
+                            val intent = Intent(this, MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
 
 
-                        Toast.makeText(this,"로그인 성공", Toast.LENGTH_LONG).show()
-                    } else {
-                        Toast.makeText(this,"로그인 실패", Toast.LENGTH_LONG).show()
+                            Toast.makeText(this,"로그인 성공", Toast.LENGTH_LONG).show()
+                        } else {
+                            Toast.makeText(this,"로그인 실패", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
+            }
         }
     }
 }

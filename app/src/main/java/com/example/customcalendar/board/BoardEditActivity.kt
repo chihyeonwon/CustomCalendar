@@ -103,9 +103,11 @@ class BoardEditActivity : AppCompatActivity() {
 
                 val dataModel = dataSnapshot.getValue(BoardModel::class.java)
 
-                binding.titleArea.setText(dataModel?.title)
-                binding.contentArea.setText(dataModel?.content)
-                writerUid = dataModel!!.uid
+                if (dataModel != null) {
+                    binding.titleArea.setText(dataModel.title)
+                    binding.contentArea.setText(dataModel.content)
+                    writerUid = dataModel.uid
+                }
             }
 
             override fun onCancelled(databaseError: DatabaseError) {

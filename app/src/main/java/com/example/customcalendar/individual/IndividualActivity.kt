@@ -17,12 +17,17 @@ import com.example.customcalendar.R
 import com.example.customcalendar.databinding.ActivityIndividualBinding
 import com.example.customcalendar.utils.FBAuth
 import com.example.customcalendar.utils.FBRef
+import com.google.firebase.auth.FirebaseAuth
+
 class IndividualActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityIndividualBinding
-    private lateinit var selectedbtn: String
+    private var selectedbtn: String = "NaN"
 
     private val TAG = IndividualActivity::class.java.simpleName
+
+    val user = FirebaseAuth.getInstance().currentUser
+    val email = user?.email.toString()
 
     @SuppressLint("MissingInflatedId")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +53,7 @@ class IndividualActivity : AppCompatActivity() {
                 val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
                 val selectedDay = dPicker.dayOfMonth.toString()
                 //Log.d(TAG, "Selected Date: $selectedDate")
-                findViewById<TextView>(R.id.startDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
+                findViewById<TextView>(R.id.startDate).text = selectedYear + "-" + selectedMonth +"-"+ selectedDay
                 startAlertDialog.dismiss()
                 //Toast.makeText(this, "수락", Toast.LENGTH_SHORT).show()
             }
@@ -71,7 +76,7 @@ class IndividualActivity : AppCompatActivity() {
                 val selectedMonth = (dPicker.month + 1).toString() // 0부터 시작하므로 1을 더해야 실제 월을 얻을 수 있음.
                 val selectedDay = dPicker.dayOfMonth.toString()
 
-                findViewById<TextView>(R.id.endDate).text = selectedYear + "년 " + selectedMonth +"월 "+ selectedDay + "일"
+                findViewById<TextView>(R.id.endDate).text = selectedYear + "-" + selectedMonth +"-"+ selectedDay
                 endAlertDialog.dismiss()
 
             }
@@ -129,16 +134,24 @@ class IndividualActivity : AppCompatActivity() {
             val endtime = binding.endTime.text.toString()
             val plan = binding.plan.text.toString()
             val location = binding.location.text.toString()
-            val uid = FBAuth.getUid()
+            val user = FirebaseAuth.getInstance().currentUser
+            val email = user?.email.toString()
             val inputTime = FBAuth.getTime()
 
             //FBRef.calendarRef.setValue(CalendarModel(date, plan, location))
             if(plan == "")
                 Toast.makeText(binding.root.context, "일정이 없습니다.", Toast.LENGTH_SHORT).show()
-            else if(uid == "null")
+            else if(email == "null")
                 Toast.makeText(binding.root.context, "비로그인 상태.", Toast.LENGTH_SHORT).show()
             else
-                FBRef.calendarRef.push().setValue(CalendarModel(startdate, enddate, starttime, endtime, plan, location, uid, inputTime, selectedbtn))
+                FBRef
+                    .calendarRef
+                    .push()
+                    .setValue(
+                        CalendarModel(
+                            startdate, enddate, starttime, endtime, plan, location, email, inputTime, selectedbtn
+                        )
+                    )
             //Toast.makeText(this, "게시글 입력 완료", Toast.LENGTH_LONG).show()
 
             Log.d(TAG, plan)
