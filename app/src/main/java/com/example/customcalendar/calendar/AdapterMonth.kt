@@ -113,7 +113,6 @@ class AdapterMonth(val height:Int, val friendList: MutableList<FriendModel>): Re
                     holiday.add(hdmodel)
                 }
             }
-
         }
 
     }
