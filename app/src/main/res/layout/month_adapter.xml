@@ -97,6 +97,7 @@
         android:id="@+id/item_month_day_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:windowSoftInputMode="adjustNothing"/>
+        android:focusableInTouchMode="true"
+        android:descendantFocusability="beforeDescendants"/>
 
 </LinearLayout>
