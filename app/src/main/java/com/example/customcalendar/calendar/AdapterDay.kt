@@ -59,6 +59,9 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
     val user = FirebaseAuth.getInstance().currentUser
     private val email = user?.email
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): DayView {
         val binding = DayAdapterBinding.inflate(LayoutInflater.from(parent.context), parent, false) // ViewBinding 초기화
@@ -69,6 +72,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
         var isholi = 'F'
         //getFriends()
         holder.binding.itemDayLayout.setOnClickListener {
+            Log.i(formatter.format(dayList[position]).toString(), "선택된 날짜")
             val startView = LayoutInflater.from(holder.binding.root.context).inflate(R.layout.dayplan_dialog, null)
             val pBuilder = AlertDialog.Builder(holder.binding.root.context).setView(startView)
             val startAlertDialog = pBuilder.show()
@@ -82,7 +86,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
                 pdate.setTextColor(Color.RED)
                 hidden.text = holder.binding.holiday.text
             }
-            /*11.21 ,수정사항*/
+
             val plist = startView.findViewById<ListView>(R.id.plan_list)
 
 
@@ -92,7 +96,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
                 tmpPosition = position
                 holder.binding.root.context.startActivity(intent)
             }
-            /*end*/
+
             pdate.text = dayList[position].date.toString()
             pdow.text = getDow(position)
 
@@ -144,7 +148,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             holder.binding.itemDayText.alpha = 0.4f
         }
 
-        if(today.get(Calendar.MONTH) == dayList[position].month && today.get(Calendar.DATE) == dayList[position].date) { // 오늘 날짜 강조
+        if((today.get(Calendar.MONTH) == dayList[position].month) && (today.get(Calendar.DATE) == dayList[position].date)) { // 오늘 날짜 강조
             holder.binding.itemDayLayout.setBackgroundResource(R.drawable.round_border)
         } // 기존 날짜 강조
 
@@ -153,7 +157,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
             Log.i(item.myEmail, "세팅2")
         }
 
-        Timer().schedule(2500){ //딜레이
+        Timer().schedule(1500){ //딜레이
             getPlanData(holder, position, planData, planAdapter) // 달력 셀에 데이터 가져오기
         }
     }

@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.customcalendar.BuildConfig.API_KEY
+import com.example.customcalendar.BuildConfig.ENDPOINT_GET_HOLIDAY
 import com.example.customcalendar.board.BoardModel
 import com.example.customcalendar.databinding.MonthAdapterBinding
 import com.example.customcalendar.friend.FriendListLVAdapter
@@ -40,6 +41,9 @@ class AdapterMonth(val height:Int, val friendList: MutableList<FriendModel>): Re
         return MonthView(binding)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
     override fun onBindViewHolder(holder: MonthView, position: Int) {
         calendar.time = Date()
         calendar.set(Calendar.DAY_OF_MONTH, 1)
@@ -73,9 +77,9 @@ class AdapterMonth(val height:Int, val friendList: MutableList<FriendModel>): Re
     }
     inner class NetworkThread: Thread(){
         override fun run() {
-            var localdate : String = "" // 날짜
-            var isHoliday : String = "" // 휴일인지
-            var dateName : String = "" // 이름
+            var localdate : String// 날짜
+            var isHoliday : String// 휴일인지
+            var dateName : String // 이름
 
             val solYear = calendar.get(Calendar.YEAR)
             val month = calendar.get(Calendar.MONTH) + 1
@@ -84,7 +88,7 @@ class AdapterMonth(val height:Int, val friendList: MutableList<FriendModel>): Re
             if(month<10)
                 solMonth = "0" + month
 
-            val site = "https://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo?serviceKey=" + API_KEY + "&solYear=" + solYear + "&solMonth=" + solMonth
+            val site = ENDPOINT_GET_HOLIDAY + "getRestDeInfo?serviceKey=" + API_KEY + "&solYear=" + solYear + "&solMonth=" + solMonth
             val xml: Document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(site)
 
             val list: NodeList = xml.getElementsByTagName("item")
@@ -97,7 +101,7 @@ class AdapterMonth(val height:Int, val friendList: MutableList<FriendModel>): Re
                     val elem = n as Element
                     val map = mutableMapOf<String,String>()
 
-                    // 이부분은 어디에 쓰이는지 잘 모르겠다.
+                    //용도 불명
                     for(j in 0..elem.attributes.length - 1) {
                         map.putIfAbsent(
                             elem.attributes.item(j).nodeName,
