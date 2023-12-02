@@ -86,7 +86,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
                 pdate.setTextColor(Color.RED)
                 hidden.text = holder.binding.holiday.text
             }
-            /*11.21 ,수정사항*/
+
             val plist = startView.findViewById<ListView>(R.id.plan_list)
 
 
@@ -96,7 +96,7 @@ class AdapterDay(val tempMonth:Int, val dayList: MutableList<Date>, val height:I
                 tmpPosition = position
                 holder.binding.root.context.startActivity(intent)
             }
-            /*end*/
+
             pdate.text = dayList[position].date.toString()
             pdow.text = getDow(position)
 
